@@ -1,0 +1,35 @@
+{
+  "product": "Spain Evidence MCP Apps",
+  "version": "0.3.0",
+  "verified_at": "2026-10-21T13:45:22.805430+00:00",
+  "source": "https://github.com/samihalawa/spain-assistant-mcp-apps",
+  "live_endpoint": "http://czfiazetlzcx5gkd5pijemmm.5.75.140.17.sslip.io/mcp",
+  "public_https": false,
+  "hosting": "Coolify Dockerfile public-repository-driven deployment",
+  "coolify_application_uuid": "czfiazetlzcx5gkd5pijemmm",
+  "coolify_deployment_uuid": "mup6c9r1pl2a0kmpojuav5bq",
+  "deployment_status_observed": "finished",
+  "application_status_observed": "running:healthy",
+  "public_health_http_status": 200,
+  "public_mcp_initialize": "passed",
+  "public_mcp_tools": 7,
+  "public_mcp_ui_resources": 7,
+  "resources_mime": "text/html;profile=mcp-app",
+  "all_tools_readonly_ui_linked": true,
+  "public_mcp_live_grants": {
+    "ok": true,
+    "records": 2,
+    "official_sources": 3
+  },
+  "local_protocol_tests": {
+    "passed": 3,
+    "failed": 0
+  },
+  "limitations": [
+    "The temporary public endpoint uses plain HTTP and must not be submitted to ChatGPT as an approved production HTTPS MCP server.",
+    "TLS certificate validation at the same sslip.io hostname failed.",
+    "The proposed branded DNS name was not changed: it resolves to another address and the available Cloudflare credential returned HTTP 403.",
+    "The UI resources were validated over MCP but were not yet tested in the actual ChatGPT and Claude visual host environments.",
+    "No official directory submission, review, public listing, installation adoption, revenue or active CI is claimed."
+  ]
+}

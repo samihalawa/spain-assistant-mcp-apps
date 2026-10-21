@@ -49,3 +49,9 @@ Read the underlying product repositories for additional scope and provider cavea
 This repository is the **MCP backend source** for the seven previously published skills plugins. It does not change those plugins' identities or private account IDs. Connecting an MCP backend to a public ChatGPT plugin requires packaging it with a verified remote endpoint and submitting through the appropriate portal; adding an MCP connection to an already reviewed skills-only submission may require a new plugin submission according to current portal rules.
 
 No official directory review, approval, installation or adoption is claimed from source publication. See [technical evidence](evidence/), [model-invocation evaluation](docs/MARKETPLACE.md) and official [MCP Apps documentation](https://apps.extensions.modelcontextprotocol.io/).
+
+## Public verification (2026-10-21)
+
+The Coolify-backed service is deployed from this GitHub repository and responds at the **temporary HTTP** endpoint `http://czfiazetlzcx5gkd5pijemmm.5.75.140.17.sslip.io/mcp`. An independent MCP SDK client successfully discovered all seven tools and seven interactive resources, read a UI HTML resource, and queried BDNS live through the server (two records, three source links). See [public MCP verification](evidence/public-mcp-verification.json).
+
+**Not ready for ChatGPT directory submission:** that endpoint is HTTP, not verified public HTTPS. TLS for the corresponding sslip.io hostname failed; no DNS/certificate or existing domain configuration was changed to bypass it. A stable authorized HTTPS origin and actual in-host desktop/mobile UI testing are still required. Do not confuse a working remote MCP service with a publicly approved app.
