@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.env*
+*.pem
+*.p12
+*.key
+__pycache__/
+*.pyc
+.DOCKER*
