@@ -61,3 +61,15 @@ test('host, Origin, content type and chunked body limits are enforced',async()=>
   assert.equal((await fetch(base+'/mcp/not-a-product')).status,404);
  });
 });
+
+test('OpenAI ownership challenge serves exact public bytes only at its GET path',async()=>{
+ await withServer(async base=>{
+  const path='/.well-known/openai-apps-challenge';
+  const response=await fetch(base+path);
+  assert.equal(response.status,200);
+  assert.equal(response.headers.get('content-type'),'text/plain; charset=utf-8');
+  assert.equal(await response.text(),'T6ZiXlZrSBR-G_bxEWWAR2DqmGgQDRnhlDAG9OCsFcw');
+  assert.equal((await fetch(base+path+'/extra')).status,404);
+  assert.equal((await fetch(base+path,{method:'POST'})).status,404);
+ });
+});

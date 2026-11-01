@@ -120,6 +120,9 @@ export function createHttpServer() {
   const origin = req.headers.origin;
   if (origin && !allowedOrigins.has(origin)) { reject(res, 403, 'Origin is not allowed'); return; }
   if (origin) { res.setHeader('Access-Control-Allow-Origin', origin); res.setHeader('Vary', 'Origin'); }
+  if (path === '/.well-known/openai-apps-challenge' && req.method === 'GET') {
+   res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'}).end('T6ZiXlZrSBR-G_bxEWWAR2DqmGgQDRnhlDAG9OCsFcw'); return;
+  }
   if (path === '/health' && req.method === 'GET') {
    res.writeHead(200, {'Content-Type': 'application/json'}).end(JSON.stringify({status: 'ok', version: APP_VERSION, tools: PRODUCTS.length, auth: 'none; public read-only data', source_revision: process.env.SOURCE_COMMIT || null,
     endpoints: Object.fromEntries(PRODUCTS.map(p => [p.slug, '/mcp/' + p.slug]))})); return;
