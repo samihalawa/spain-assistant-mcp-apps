@@ -139,6 +139,17 @@ class DomainLogic(unittest.TestCase):
     def test_borme_range_bounds(self):
         self.assertFalse(c.call_tool('borme_company_range',{'company':'ABC','start_date':'2026-10-01','end_date':'2026-10-20'})['ok'])
         self.assertFalse(c.call_tool('borme_company_range',{'company':'A','start_date':'2026-10-19','end_date':'2026-10-20'})['ok'])
+    def test_hosted_article_warning_does_not_recommend_an_unexposed_operation(self):
+        law=response('<response><bloque id="a118" titulo="Artículo 118"><version fecha_vigencia="20200101"><p>Texto oficial de ejemplo</p></version></bloque></response>')
+        with patch.object(c.CLIENT,'get',return_value=law):
+            result=c.call_tool('boe_find_articles',{'law_id':'BOE-A-2020-1','query':'Artículo 118','as_of':'2026-01-01'})
+        self.assertTrue(result['ok'])
+        self.assertEqual(result['data'][0]['block_id'],'a118')
+        warnings=' '.join(result['warnings'])
+        self.assertNotIn('boe_compare',warnings)
+        self.assertIn('This tool locates articles only.',warnings)
+        self.assertIn('both dated official BOE texts',warnings)
+
     def test_boe_compare_exposes_texts_and_dates(self):
         law=response('<response><data><texto><bloque id="a1"><version fecha_vigencia="20200101"><p>Before</p></version><version fecha_vigencia="20250101"><p>After</p></version></bloque></texto></data></response>')
         with patch.object(c.CLIENT,'get',return_value=law):r=c.boe_compare('BOE-A-2020-1','a1','2020-01-02','2026-01-01')

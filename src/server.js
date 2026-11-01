@@ -11,7 +11,7 @@ import { PRODUCTS, bySlug } from './registry.js';
 import { callPython } from './worker.js';
 
 const dir = dirname(fileURLToPath(import.meta.url));
-export const APP_VERSION = '0.6.0';
+export const APP_VERSION = '0.6.1';
 const templates = new Map(PRODUCTS.map(p => {
  const path = resolve(dir, '../public/dist', p.slug + '.html');
  if (!existsSync(path)) throw new Error('Run npm run build first: missing ' + path);

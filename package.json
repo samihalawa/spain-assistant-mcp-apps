@@ -1,6 +1,6 @@
 {
   "name": "spain-assistant-mcp-apps",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "private": false,
   "type": "module",
   "description": "Seven evidence-grounded Spanish public-data MCP Apps with accessible interactive views",

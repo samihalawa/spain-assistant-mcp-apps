@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from typing import Any, Callable
 from zoneinfo import ZoneInfo
 
-VERSION = "0.6.0"
+VERSION = "0.6.1"
 MADRID = ZoneInfo("Europe/Madrid")
 BOE = "https://www.boe.es"
 BDNS = "https://www.infosubvenciones.es/bdnstrans/api"
@@ -779,7 +779,7 @@ def boe_find_articles(law_id: str, query: str, as_of: str = "", offset: int = 0,
         haystack=fold(title+' '+body) if search_text else fold(title)
         if all(term in haystack for term in terms):
             matches.append({'block_id':block.get('id'),'title':title,'type':block.get('tipo'),'selected_version':dict(selected.attrib) if selected is not None else None,'excerpt':body[:450] if selected is not None else None,'text_searched':search_text})
-    return envelope(matches[offset:offset+limit],[f],['Search covers only this law and the selected date. A matched article is not a finding of legal applicability. Use boe_compare with its returned block_id and explicit dates.'],law_id=law_id,query=q,as_of=day.isoformat(),matches=len(matches),returned=len(matches[offset:offset+limit]),next_offset=offset+limit if offset+limit<len(matches) else None,search_text=search_text)
+    return envelope(matches[offset:offset+limit],[f],['Search covers only this law and the selected date. A matched article is not a finding of legal applicability. This tool locates articles only. Compare versions separately using both dated official BOE texts and retain their source evidence.'],law_id=law_id,query=q,as_of=day.isoformat(),matches=len(matches),returned=len(matches[offset:offset+limit]),next_offset=offset+limit if offset+limit<len(matches) else None,search_text=search_text)
 
 
 _BORME_EVENTS=(('incorporation',r'\bconstitucion\b'),('dissolution',r'\bdisolucion\b'),('registered_office_change',r'\bcambio de domicilio\b'),('appointment',r'\bnombramientos?\b'),('resignation',r'\bceses?\b|\bdimisiones?\b'),('capital_increase',r'\bampliacion de capital\b'),('capital_reduction',r'\breduccion de capital\b'),('correction',r'\bfe de erratas\b|\brectificacion\b'),('insolvency_proceeding',r'\bconcurso\b'))
