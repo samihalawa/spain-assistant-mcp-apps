@@ -5,14 +5,18 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const script = resolve(root, "python", "tool_runner.py");
 const PYTHON = process.env.PYTHON_BIN || "python3";
-const TIMEOUT_MS = Math.min(60000, Math.max(5000, Number(process.env.PYTHON_TIMEOUT_MS || 35000)));
+function setting(name, fallback, low, high) {
+  const value = Number(process.env[name] || fallback);
+  return Number.isSafeInteger(value) ? Math.min(high, Math.max(low, value)) : fallback;
+}
+const TIMEOUT_MS = setting("PYTHON_TIMEOUT_MS", 35000, 5000, 60000);
 const MAX_OUTPUT_BYTES = 3_000_000;
-const concurrency = Math.min(6, Math.max(1, Number(process.env.MAX_CONCURRENT_PYTHON || 3)));
+const concurrency = setting("MAX_CONCURRENT_PYTHON", 3, 1, 6);
 let running = 0;
 const waiting = [];
 function slot() {
   return new Promise((resolve, reject) => {
-    if (waiting.length > 40) { reject(new Error("Server busy; retry later.")); return; }
+    if (waiting.length >= 40) { reject(new Error("Server busy; retry later.")); return; }
     const start = () => { running++; resolve(() => { running--; waiting.shift()?.(); }); };
     if (running < concurrency) start(); else waiting.push(start);
   });
@@ -51,6 +55,7 @@ export async function callPython(tool, args) {
           done(null, value);
         } catch { done(new Error("Invalid adapter response; no result inferred.")); }
       });
+      child.stdin.on("error", () => done(new Error("Source worker input unavailable.")));
       child.stdin.end(JSON.stringify(args));
     });
   } finally { release(); }

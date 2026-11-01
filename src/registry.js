@@ -14,7 +14,7 @@ export const PRODUCTS = Object.freeze([
     pyTool: "licita_triage", label: "Licitaciones públicas", icon: "briefcase",
     description: "Find Spanish public tenders in a bounded official PLACSP feed window, grouped by deadline review status. Use for procurement opportunities, not submitting bids or declaring eligibility. Returns original tender IDs and links, budgets, deadlines, coverage and continuation.",
     promise: "Decide qué licitación merece tu tiempo", hint: "Tecnología, formación, consultoría…",
-    fields: { query: query.optional().default("software"), cpv_prefix: z.string().regex(/^\d{2,8}$/).optional(), max_pages: integer(2).optional().default(1), limit: integer(10).optional().default(6), deadline_from: date.optional() },
+    fields: { query: query.optional().default("software"), cpv_prefix: z.string().regex(/^\d{2,8}$/).optional(), max_pages: integer(2).optional().default(1), limit: integer(10).optional().default(6), cursor: z.string().url().max(2048).optional(), offset: z.number().int().min(0).max(100000).optional().default(0), deadline_from: date.optional() },
     previewField: "title", urlField: "official_url",
   },
   {
@@ -30,7 +30,7 @@ export const PRODUCTS = Object.freeze([
     pyTool: "boe_find_articles", label: "Legislación y BOE", icon: "scale",
     description: "Locate exact article/block identifiers inside a named BOE consolidated Spanish law by title or text. Use before comparing editions; report legal version and provenance, not legal advice.",
     promise: "Encuentra el artículo antes de compararlo", hint: "Artículo 118, contratos menores…",
-    fields: { law_id: z.string().regex(/^BOE-[AB]-\d{4}-\d{1,8}$/), query, limit: integer(15).optional().default(8), search_text: z.boolean().optional().default(false), as_of: date.optional() },
+    fields: { law_id: z.string().regex(/^BOE-[AB]-\d{4}-\d{1,8}$/), query: query.max(120), limit: integer(15).optional().default(8), search_text: z.boolean().optional().default(false), offset: z.number().int().min(0).max(100000).optional().default(0), as_of: date.optional() },
     previewField: "title", urlField: "official_url",
   },
   {
@@ -38,7 +38,7 @@ export const PRODUCTS = Object.freeze([
     pyTool: "borme_events", label: "Registro mercantil", icon: "building",
     description: "Review one company name against official BORME notices over a bounded period up to seven days and classify published corporate events as non-certified keywords. Use for company change research; not credit scoring, monitoring, people dossiers or beneficial ownership.",
     promise: "Los cambios de una empresa, con la fuente delante", hint: "Nombre de la sociedad",
-    fields: { company: query, start_date: date, end_date: date, province: z.string().trim().min(2).max(80).optional().default("MADRID"), limit: integer(30).optional().default(10) },
+    fields: { company: query.min(3), start_date: date, end_date: date, province: z.string().trim().min(2).max(80).optional().default("MADRID"), limit: integer(30).optional().default(10) },
     previewField: "heading", urlField: "official_url",
   },
   {
@@ -54,7 +54,7 @@ export const PRODUCTS = Object.freeze([
     pyTool: "ine_series_change", label: "Estadísticas oficiales", icon: "chart",
     description: "Retrieve two comparable observations from an official INE statistical series and show units, observed periods, absolute change and arithmetic percentage change when defined. Use for Spanish statistics with a verified series code; never infer an annual growth rate or that a series is current.",
     promise: "La cifra correcta, con todo su contexto", hint: "Código de serie oficial (por ejemplo IPC251852)",
-    fields: { series_code: z.string().regex(/^[A-Za-z][A-Za-z0-9]{1,39}$/), last: integer(24).optional().default(12) },
+    fields: { series_code: z.string().regex(/^[A-Za-z][A-Za-z0-9]{1,39}$/), last: integer(24).min(2).optional().default(12) },
     previewField: "series_name", urlField: "source_url",
   },
   {

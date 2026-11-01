@@ -42,6 +42,12 @@ function el(tag,attrs={},value=""){
 function safeUrl(url){
  try{const u=new URL(url);return ["https:"].includes(u.protocol)&&!u.username&&!u.password?u.href:null}catch{return null}
 }
+const LABELS={reference:"Referencia",bdns_number:"Número BDNS",authority:"Órgano",province:"Provincia",budget_excluding_tax:"Presupuesto sin IVA",currency:"Moneda",deadline_date:"Cierre publicado",end_date:"Fecha final",date_state:"Estado del plazo",review_bucket:"Prioridad de revisión",beneficiary_types:"Beneficiarios publicados",call_type:"Modalidad",start_date:"Fecha inicial",as_of:"Fecha de referencia",built_area_m2:"Superficie construida (m²)",parcel_area_m2:"Superficie de parcela (m²)",construction_year:"Año declarado",use:"Uso",longitude:"Longitud",latitude:"Latitud",older_period:"Periodo anterior",older_value:"Valor anterior",newer_period:"Periodo posterior",newer_value:"Valor posterior",absolute_change:"Cambio absoluto",percentage_change:"Cambio porcentual",formats:"Formatos",publisher:"Publicador",declared_licence:"Licencia declarada",event_categories:"Actos identificados",available_versions:"Versiones disponibles"};
+const numberFormat=new Intl.NumberFormat("es-ES",{maximumFractionDigits:6});
+function displayValue(value,key){
+ if(typeof value==="number"&&Number.isFinite(value))return numberFormat.format(value)+(key==="percentage_change"?" %":"");
+ return text(value,250);
+}
 function card(row,index){
  const card=el("article",{class:"card"});
  const label=raw(row,cols[1][0]) || name;
@@ -56,7 +62,7 @@ function card(row,index){
  let n=0;
  for(const key of priority){if(!(key in row)||omit.has(key)||row[key]==null)continue;
    if(n>= (showingDetail?16:5))break;
-   const dt=el("dt",{},key.replaceAll("_"," ")),dd=el("dd",{},text(row[key],250));
+   const dt=el("dt",{},LABELS[key]||key.replaceAll("_"," ")),dd=el("dd",{},displayValue(row[key],key));
    detail.append(dt,dd);n++;
  }
  card.append(detail);

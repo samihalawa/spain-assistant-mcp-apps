@@ -2,27 +2,27 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Spain Evidence · MCP App</title>
 <style>
-:root{color-scheme:light dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;font-size:14px}*{box-sizing:border-box}
-body{background:var(--color-background-primary,#fff);color:var(--color-text-primary,#18283d);margin:0;line-height:1.55}
-main{max-width:1080px;margin:0 auto;padding:20px}header{display:flex;gap:12px;align-items:center;margin-bottom:18px}
-.logo{width:44px;height:44px;border-radius:13px;background:var(--accent,#145b76);color:#fff;font-size:22px;display:grid;place-items:center;font-weight:700}
-h1{font-size:20px;line-height:1.25;margin:0;font-weight:750}h2{font-size:17px;margin:0}p{margin:.3em 0}.eyebrow{font-size:10px;color:var(--color-text-secondary,#687c90);letter-spacing:.14em;font-weight:800;text-transform:uppercase}
-.sub{color:var(--color-text-secondary,#687c90);font-size:12px}#status{margin:12px 0;padding:9px 12px;border:1px solid var(--color-border-secondary,#d9e2ea);border-radius:9px;background:var(--color-background-secondary,#f6f8fa);font-size:12px}
-.rail{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.rail .chip{padding:6px 10px;border-radius:99px;border:1px solid var(--color-border-secondary,#d9e2ea);font-size:11px;font-weight:700}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}input{flex:1 1 200px;min-width:0;border:1px solid var(--color-border-primary,#aebecd);padding:11px 12px;border-radius:9px;font:inherit;color:inherit;background:transparent}
-button{border:1px solid var(--color-border-primary,#aebecd);border-radius:9px;padding:10px 12px;background:var(--color-background-primary,#fff);color:inherit;font:inherit;font-weight:650;cursor:pointer}
+:root{color-scheme:light;font-family:system-ui,-apple-system,Segoe UI,sans-serif;font-size:14px}*{box-sizing:border-box}
+body{background:var(--color-background-primary,#f8f8f6);color:var(--color-text-primary,#18283d);margin:0;line-height:1.55}
+main{max-width:1080px;margin:0 auto;padding:20px}header{display:flex;gap:12px;align-items:center;margin-bottom:18px;border-bottom:1px solid var(--color-border-secondary,#dce0dd);padding-bottom:18px}
+.logo{width:44px;height:44px;border-radius:2px;background:var(--accent,#145b76);color:#fff;font-size:22px;display:grid;place-items:center;font-weight:700}
+h1{font-size:21px;line-height:1.25;margin:0;font-weight:650}h2{font:normal 23px/1.25 Georgia,serif;margin:0}p{margin:.3em 0}.eyebrow{font-size:10px;color:var(--color-text-secondary,#687c90);letter-spacing:.14em;font-weight:800;text-transform:uppercase}
+.sub{color:var(--color-text-secondary,#687c90);font-size:12px}#status{margin:12px 0;padding:9px 12px;border:1px solid var(--color-border-secondary,#d9e2ea);border-radius:2px;background:var(--color-background-secondary,#f6f8fa);font-size:12px}
+.rail{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.rail .chip{padding:6px 10px;border-radius:2px;border:1px solid var(--color-border-secondary,#d9e2ea);font-size:11px;font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}input{flex:1 1 200px;min-width:0;border:1px solid var(--color-border-primary,#aebecd);padding:11px 12px;border-radius:2px;font:inherit;color:inherit;background:transparent}
+button{border:1px solid var(--color-border-primary,#aebecd);border-radius:2px;padding:10px 12px;background:var(--color-background-primary,#f8f8f6);color:inherit;font:inherit;font-weight:650;cursor:pointer}
 button:hover{background:var(--color-background-secondary,#f0f4f8)}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent,#145b76);outline-offset:2px}
 button.primary{background:var(--accent,#145b76);border-color:var(--accent,#145b76);color:#fff}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:10px}
-.card{border:1px solid var(--color-border-secondary,#dae2e9);padding:15px;border-radius:13px;background:var(--color-background-primary,#fff);min-width:0}
+.card{border:1px solid var(--color-border-secondary,#dae2e9);padding:15px;border-radius:2px;background:var(--color-background-primary,#f8f8f6);min-width:0}
 .card h2{margin:6px 0;line-height:1.35}.meta{color:var(--color-text-secondary,#687c90);font-size:12px;overflow-wrap:anywhere}
 .card p{overflow-wrap:anywhere}.card a{display:inline-flex;color:var(--accent,#17658b);font-weight:720;text-underline-offset:3px;overflow-wrap:anywhere}
 .tag{font-size:10px;color:var(--accent,#155b76);font-weight:780;text-transform:uppercase;letter-spacing:.05em}
 .card dl{display:grid;grid-template-columns:1fr 1.5fr;gap:4px 12px;margin:12px 0}.card dt{font-size:11px;color:var(--color-text-secondary,#687c90)}.card dd{margin:0;font-size:12px;overflow-wrap:anywhere}
 footer{margin-top:20px;border-top:1px solid var(--color-border-secondary,#e0e5eb);padding-top:14px;color:var(--color-text-secondary,#687c90);font-size:11px}
-details{margin-top:15px;padding:10px 12px;border:1px solid var(--color-border-secondary,#dce4eb);border-radius:10px}summary{cursor:pointer;font-weight:670}
+details{margin-top:15px;padding:10px 12px;border:1px solid var(--color-border-secondary,#dce4eb);border-radius:2px}summary{cursor:pointer;font-weight:670}
 pre{font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
-.error{color:#a12830}.hidden{display:none!important}.empty{padding:35px 20px;text-align:center;color:var(--color-text-secondary,#687c90);border:1px dashed #b7c6d4;border-radius:10px}
+.error{color:#a12830}.hidden{display:none!important}.empty{padding:35px 20px;text-align:center;color:var(--color-text-secondary,#687c90);border:1px dashed #b7c6d4;border-radius:2px}
 [aria-live]{min-height:0}@media(max-width:540px){main{padding:12px}header{margin-bottom:12px}.toolbar button{flex:1}.card dl{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body>
