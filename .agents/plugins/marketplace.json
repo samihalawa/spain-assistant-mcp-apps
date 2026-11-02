@@ -1,0 +1,188 @@
+{
+  "name": "megawebs-plugins",
+  "interface": {
+    "displayName": "Megawebs Plugins"
+  },
+  "plugins": [
+    {
+      "name": "ayudas-espana",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/ayudas-espana.git",
+        "ref": "v0.6.0",
+        "sha": "472560e77bd0e8715e18e86078285bb7e85e929e"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "licita-espana",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/licita-espana.git",
+        "ref": "v0.6.0",
+        "sha": "7c2774f84d3492a195d7fed0e1e98c5320abe65b"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "boe-impact",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/boe-impact.git",
+        "ref": "v0.6.0",
+        "sha": "4c63347fbfdd146f16c8fc09ec72d0e6e3684c76"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "borme-intelligence",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/borme-intelligence.git",
+        "ref": "v0.6.0",
+        "sha": "816e88d13b1127f88a04c1feb0b08db368f8e2ea"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "catastro-pro",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/catastro-pro.git",
+        "ref": "v0.6.0",
+        "sha": "8f6ec5da34ddc44de666038aefd063a3bce12176"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "ine-evidence",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/ine-evidence.git",
+        "ref": "v0.6.0",
+        "sha": "90137a1cec617731ba076a90464e96911434034b"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "spain-open-data",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/spain-open-data.git",
+        "ref": "v0.6.0",
+        "sha": "dd21e81676f72e057805623732b646bdbcd1314a"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.6.0"
+    },
+    {
+      "name": "bunq-banking-mcp",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/bunq-banking-mcp.git",
+        "ref": "v0.3.5",
+        "sha": "0d48d28b5aaa27da10d338f8cb7fe4d4ba0861f0"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.3.5"
+    },
+    {
+      "name": "morning-operator",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/morning-operator-plugin.git",
+        "ref": "v0.1.1",
+        "sha": "5b98d5610d8c694090d88fcd175131c51a433bac"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.1.1"
+    },
+    {
+      "name": "magicinterview",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/magicinterview-plugin.git",
+        "ref": "v1.4.5",
+        "sha": "849d46d8e697cb36ccd7799cba1be2954a28b39c"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "1.4.5"
+    },
+    {
+      "name": "linkedin-godmode-plugin",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/linkedin-godmode-plugin.git",
+        "ref": "v0.1.3",
+        "sha": "4af1618f0dafaf951fd16534039da7cb4b822d0a"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "0.1.3"
+    },
+    {
+      "name": "grokbot",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/samihalawa/grokbot.git",
+        "ref": "v1.3.3",
+        "sha": "8142baf95ce5853d143e9bfc14d590ae5ac5b6d2"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity",
+      "version": "1.3.3"
+    }
+  ]
+}

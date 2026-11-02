@@ -17,6 +17,8 @@ COPY src/ ./src/
 COPY python/ ./python/
 COPY --from=builder /srv/app/public/dist/ ./public/dist/
 COPY public/platform.* ./public/
+COPY public/platform-icons/ ./public/platform-icons/
+COPY public/downloads/ ./public/downloads/
 RUN groupadd --system app && useradd --system --gid app app && chown -R app:app /srv/app
 USER app
 ENV PORT=8787 PYTHON_BIN=python3 PYTHONDONTWRITEBYTECODE=1

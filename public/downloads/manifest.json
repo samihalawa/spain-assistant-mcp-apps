@@ -1,0 +1,148 @@
+{
+  "downloads": [
+    {
+      "slug": "ayudas-espana",
+      "version": "0.6.0",
+      "filename": "ayudas-espana-0.6.0.zip",
+      "bytes": 1244229,
+      "sha256": "ee3b0eece5578bcaa028428936fd95ef346db588854f16933760f7f82fc6fd99",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "boe-impact",
+      "version": "0.6.0",
+      "filename": "boe-impact-0.6.0.zip",
+      "bytes": 1176435,
+      "sha256": "027c9811cb0c818d72bd604fc9052117fa1da4ba0ff7b62035eb068d3d3963cf",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "borme-intelligence",
+      "version": "0.6.0",
+      "filename": "borme-intelligence-0.6.0.zip",
+      "bytes": 1145827,
+      "sha256": "d9d12e80d69278e923e050f90d64ddaade1fef63fa31e5bc98a197529059e4b1",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "catastro-pro",
+      "version": "0.6.0",
+      "filename": "catastro-pro-0.6.0.zip",
+      "bytes": 1219076,
+      "sha256": "033ba801793213ad2ad83fa2a067ea20ff0c488ceb6809c0c34446154b26e1e1",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "ine-evidence",
+      "version": "0.6.0",
+      "filename": "ine-evidence-0.6.0.zip",
+      "bytes": 1151010,
+      "sha256": "9c1deaedc9635f0c39dfd1000b5228c9b1a492c07010c2f54e42d31141556bdb",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "licita-espana",
+      "version": "0.6.0",
+      "filename": "licita-espana-0.6.0.zip",
+      "bytes": 1197460,
+      "sha256": "faf25d07458c9d9c6329e4d8594854f688f6092958b9318d665478cb571fe01e",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "spain-open-data",
+      "version": "0.6.0",
+      "filename": "spain-open-data-0.6.0.zip",
+      "bytes": 1228722,
+      "sha256": "9844b43d369f7ba5cb010576a65a05ca3dcb108c9c38a8ba63a329647f0929a4",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "magicinterview",
+      "version": "1.4.5",
+      "filename": "magicinterview-openai-1.4.5.zip",
+      "bytes": 120094,
+      "sha256": "84325c4fe82beaf96575de48d9b906b9edd55483c01a9e76bb5c61f958125c0e",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 9
+    },
+    {
+      "slug": "bunq-banking-mcp",
+      "version": "0.3.5",
+      "filename": "bunq-banking-mcp-0.3.5.zip",
+      "bytes": 158592,
+      "sha256": "9e7aa15d0807757c438b06e04bb613fcaf67af33ff51f7485d1650d86644c6f7",
+      "platforms": [
+        "claude-code",
+        "codex"
+      ],
+      "files": 27
+    },
+    {
+      "slug": "grokbot",
+      "version": "1.3.3",
+      "filename": "grokbot-1.3.3.zip",
+      "bytes": 62147,
+      "sha256": "5e2f3afeecfaa8b2dd6f19c8d4db0c649f4af8f4395acc40a51996219f1880aa",
+      "platforms": [
+        "claude-code",
+        "codex"
+      ],
+      "files": 29
+    },
+    {
+      "slug": "linkedin-godmode-plugin",
+      "version": "0.1.3",
+      "filename": "linkedin-godmode-plugin-0.1.3.zip",
+      "bytes": 1577035,
+      "sha256": "1413eae5573e19570ed360fbec8bb9569a75b8eb38509b02a7b96f6a63b06abd",
+      "platforms": [
+        "claude-code",
+        "codex"
+      ],
+      "files": 65
+    },
+    {
+      "slug": "morning-operator",
+      "version": "0.1.1",
+      "filename": "morning-operator-0.1.1.zip",
+      "bytes": 14236,
+      "sha256": "31b781638f3f017e17b644a19ba711b2c3ffd7e5fb48c2b6bdf5419bd6db5f68",
+      "platforms": [
+        "claude-code",
+        "codex"
+      ],
+      "files": 12
+    }
+  ]
+}

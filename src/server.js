@@ -8,6 +8,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { registerAppResource, registerAppTool, RESOURCE_MIME_TYPE } from '@modelcontextprotocol/ext-apps/server';
 import { PRODUCTS, bySlug } from './registry.js';
+import { renderSite } from './site.js';
+import { CATALOG, MARKETPLACE } from './catalog.js';
 import { callPython } from './worker.js';
 
 const dir = dirname(fileURLToPath(import.meta.url));
@@ -18,10 +20,19 @@ const templates = new Map(PRODUCTS.map(p => {
  return [p.slug, readFileSync(path, 'utf8')];
 }));
 const platformAssets = new Map([
- ['/', {type: 'text/html; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.html'))}],
  ['/platform.css', {type: 'text/css; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.css'))}],
  ['/platform.js', {type: 'text/javascript; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.js'))}],
 ]);
+for (const p of CATALOG) {
+ platformAssets.set('/icons/' + p.icon, {type: p.icon.endsWith('.svg') ? 'image/svg+xml' : 'image/png', body: readFileSync(resolve(dir, '../public/platform-icons', p.icon))});
+}
+platformAssets.set('/marketplace.json', {type:'application/json; charset=utf-8',body:JSON.stringify(MARKETPLACE)});
+const downloadManifest=JSON.parse(readFileSync(resolve(dir,'../public/downloads/manifest.json'),'utf8'));
+platformAssets.set('/downloads/manifest.json', {type:'application/json; charset=utf-8',body:JSON.stringify(downloadManifest)});
+for (const entry of downloadManifest.downloads) {
+ if(!/^[a-z0-9.-]+\.zip$/.test(entry.filename))throw new Error('Invalid public download filename');
+ platformAssets.set('/downloads/'+entry.filename, {type:'application/zip',body:readFileSync(resolve(dir,'../public/downloads',entry.filename)),filename:entry.filename});
+}
 const MAX_REQUEST_BYTES = 30000;
 const windowMs = 60_000;
 const configuredLimit = Number(process.env.MAX_IP_PER_MIN || 100);
@@ -134,8 +145,14 @@ export function createHttpServer() {
   }
   if (platformAssets.has(path) && (req.method === 'GET' || req.method === 'HEAD')) {
    const asset = platformAssets.get(path);
+   if(asset.filename){res.setHeader('Content-Disposition',`attachment; filename="${asset.filename}"`);res.setHeader('Cache-Control','public, max-age=31536000, immutable');}
    res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
    res.writeHead(200, {'Content-Type': asset.type}); res.end(req.method === 'HEAD' ? undefined : asset.body); return;
+  }
+  if (!path.startsWith('/mcp') && !path.startsWith('/.well-known/') && (req.method === 'GET' || req.method === 'HEAD')) {
+   const page = renderSite(path);
+   res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
+   res.writeHead(page.status, {'Content-Type': 'text/html; charset=utf-8'}).end(req.method === 'HEAD' ? undefined : page.html); return;
   }
   const slug = path.startsWith('/mcp/') ? path.slice(5) : null;
   const products = path === '/mcp' ? PRODUCTS : slug && bySlug.has(slug) ? [bySlug.get(slug)] : null;
