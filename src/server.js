@@ -17,6 +17,11 @@ const templates = new Map(PRODUCTS.map(p => {
  if (!existsSync(path)) throw new Error('Run npm run build first: missing ' + path);
  return [p.slug, readFileSync(path, 'utf8')];
 }));
+const platformAssets = new Map([
+ ['/', {type: 'text/html; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.html'))}],
+ ['/platform.css', {type: 'text/css; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.css'))}],
+ ['/platform.js', {type: 'text/javascript; charset=utf-8', body: readFileSync(resolve(dir, '../public/platform.js'))}],
+]);
 const MAX_REQUEST_BYTES = 30000;
 const windowMs = 60_000;
 const configuredLimit = Number(process.env.MAX_IP_PER_MIN || 100);
@@ -127,7 +132,11 @@ export function createHttpServer() {
    res.writeHead(200, {'Content-Type': 'application/json'}).end(JSON.stringify({status: 'ok', version: APP_VERSION, tools: PRODUCTS.length, auth: 'none; public read-only data', source_revision: process.env.SOURCE_COMMIT || null,
     endpoints: Object.fromEntries(PRODUCTS.map(p => [p.slug, '/mcp/' + p.slug]))})); return;
   }
-  if (path === '/' && req.method === 'GET') { res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'}).end('Spain Evidence MCP — read-only Spanish official data. Connect /mcp or /mcp/<plugin-slug>.'); return; }
+  if (platformAssets.has(path) && (req.method === 'GET' || req.method === 'HEAD')) {
+   const asset = platformAssets.get(path);
+   res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
+   res.writeHead(200, {'Content-Type': asset.type}); res.end(req.method === 'HEAD' ? undefined : asset.body); return;
+  }
   const slug = path.startsWith('/mcp/') ? path.slice(5) : null;
   const products = path === '/mcp' ? PRODUCTS : slug && bySlug.has(slug) ? [bySlug.get(slug)] : null;
   if (!products) { reject(res, 404, 'Not found'); return; }
