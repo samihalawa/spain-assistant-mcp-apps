@@ -8,7 +8,7 @@ export const CATEGORIES = Object.freeze([
  {slug:'comunicacion',name:'Comunicación',description:'Herramientas para conversaciones profesionales y trabajo en red.'},
  {slug:'desarrollo',name:'Desarrollo',description:'Integraciones y herramientas para trabajar con otros asistentes.'},
 ]);
-const spain = (slug,name,summary,details,requirements,source) => ({slug,name,version:'0.6.0',category:'espana',summary,details,requirements,source,icon:`${slug}.png`,platforms:['chatgpt','claude-code','codex'],kind:'Conector remoto + skills',endpoint:`https://aiplugins.megawebs.com/mcp/${slug}`,zip:`https://github.com/samihalawa/${slug}/releases/download/v0.6.0/${slug}-0.6.0.zip`,repository:`https://github.com/samihalawa/${slug}`,claudeCommand:null});
+const spain = (slug,name,summary,details,requirements,source) => ({slug,name,version:'0.6.2',category:'espana',summary,details,requirements,source,icon:`${slug}.png`,platforms:['chatgpt','claude-code','codex'],kind:'Conector remoto + skills',endpoint:`https://aiplugins.megawebs.com/mcp/${slug}`,zip:`https://github.com/samihalawa/${slug}/releases/download/v0.6.0/${slug}-0.6.0.zip`,repository:`https://github.com/samihalawa/${slug}`,claudeCommand:null});
 const SEARCH_KEYWORDS = Object.freeze({
  'ayudas-espana':['ayudas','subvenciones','financiación','convocatorias','autónomos'],
  'licita-espana':['licitaciones','contratación pública','concursos','proveedores','CPV'],
@@ -37,7 +37,7 @@ export const CATALOG = Object.freeze([
  {slug:'linkedin-godmode-plugin',name:'LinkedIn Godmode',version:'0.1.3',category:'comunicacion',summary:'Opera flujos de navegador y red para trabajar con tu sesión de LinkedIn.',details:'Primitivas de navegador, JavaScript y HTTP que el asistente puede combinar para leer e interactuar en flujos personales de LinkedIn.',requirements:'Ejecutor local y Node.js, con Chrome/Chromium, Browserbase o Anchor Browser y una sesión de cuenta autorizada. Las acciones dependen de la sesión y los permisos disponibles.',icon:'linkedin-godmode-plugin.svg',platforms:['chatgpt','claude-code','codex'],kind:'MCP local + skills',zip:null,repository:'https://github.com/samihalawa/linkedin-godmode-plugin',claudeCommand:null},
  {slug:'grokbot',name:'Grokbot',version:'1.3.3',category:'desarrollo',summary:'Consulta Grok y Grok Bot desde un entorno local y exporta sus respuestas.',details:'Herramienta de orquestación con cuentas configuradas, selección de sesiones y exportación de conversaciones.',requirements:'Ejecutor local, instalación de Grokbot y acceso a cuentas o sesiones configuradas. La instalación del plugin no crea cuentas ni incorpora una suscripción a Grok.',icon:'grokbot.svg',platforms:['chatgpt','claude-code','codex'],kind:'Herramienta local',zip:null,repository:'https://github.com/samihalawa/grokbot',claudeCommand:null},
 ].map(p=>{
- const bundle=downloads.find(d=>d.slug===p.slug);
+ const bundle=downloads.find(d=>d.slug===p.slug&&d.version===p.version);
  if(!bundle||bundle.version!==p.version)throw new Error('Missing matching public download: '+p.slug);
  const localOnly=['bunq-banking-mcp','grokbot','linkedin-godmode-plugin','morning-operator'].includes(p.slug);
  return {...p,keywords:SEARCH_KEYWORDS[p.slug]||[],zip:'/downloads/'+bundle.filename,sourceZip:undefined,archivePlatforms:bundle.platforms,platforms:localOnly?['claude-code','codex']:p.platforms,codexCommand:`codex plugin marketplace add samihalawa/spain-assistant-mcp-apps && codex plugin add ${p.slug}@megawebs-plugins`,claudeCommand:`claude plugin install ${p.slug} --marketplace https://aiplugins.megawebs.com/marketplace.json`};
@@ -46,13 +46,13 @@ export const PLATFORMS=Object.freeze([{slug:'chatgpt',name:'ChatGPT'},{slug:'cla
 export const findProduct=slug=>CATALOG.find(p=>p.slug===slug);
 
 const SOURCE_SHAS={
- 'ayudas-espana':'472560e77bd0e8715e18e86078285bb7e85e929e',
- 'boe-impact':'4c63347fbfdd146f16c8fc09ec72d0e6e3684c76',
- 'borme-intelligence':'816e88d13b1127f88a04c1feb0b08db368f8e2ea',
- 'catastro-pro':'8f6ec5da34ddc44de666038aefd063a3bce12176',
- 'ine-evidence':'90137a1cec617731ba076a90464e96911434034b',
- 'licita-espana':'7c2774f84d3492a195d7fed0e1e98c5320abe65b',
- 'spain-open-data':'dd21e81676f72e057805623732b646bdbcd1314a',
+ 'ayudas-espana':'47f5ca08ac5e6f892c755b51e1ad22b7a0738d98',
+ 'boe-impact':'efadeddc5d20007e6b3514d32bdc41b6c06f52ab',
+ 'borme-intelligence':'8e8d31192c43a9fac149ec84c9070b77a5e4d785',
+ 'catastro-pro':'1cbe31723039403c3be56a4dc3f8e0ee080506a3',
+ 'ine-evidence':'ac060c13bed03a22513f1bbeb9d2e7fc247eacd3',
+ 'licita-espana':'58f989af7f4cfe1b9fe3dbe9fc483862f7bd6dfd',
+ 'spain-open-data':'3bc59c7b7191b60c74844b4a2d4d609b49c70502',
  'bunq-banking-mcp':'0d48d28b5aaa27da10d338f8cb7fe4d4ba0861f0',
  'grokbot':'8142baf95ce5853d143e9bfc14d590ae5ac5b6d2',
  'linkedin-godmode-plugin':'4af1618f0dafaf951fd16534039da7cb4b822d0a',

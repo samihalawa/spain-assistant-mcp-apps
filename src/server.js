@@ -29,7 +29,7 @@ for (const p of CATALOG) {
 platformAssets.set('/marketplace.json', {type:'application/json; charset=utf-8',body:JSON.stringify(MARKETPLACE)});
 const downloadManifest=JSON.parse(readFileSync(resolve(dir,'../public/downloads/manifest.json'),'utf8'));
 platformAssets.set('/downloads/manifest.json', {type:'application/json; charset=utf-8',body:JSON.stringify(downloadManifest)});
-for (const entry of downloadManifest.downloads) {
+for (const entry of [...downloadManifest.downloads,...(downloadManifest.archived||[])]) {
  if(!/^[a-z0-9.-]+\.zip$/.test(entry.filename))throw new Error('Invalid public download filename');
  platformAssets.set('/downloads/'+entry.filename, {type:'application/zip',body:readFileSync(resolve(dir,'../public/downloads',entry.filename)),filename:entry.filename});
 }

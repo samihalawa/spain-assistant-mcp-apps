@@ -19,7 +19,7 @@ test('directory renders all public products, categories and platform guides on d
 
 test('every download is an exact versioned attachment and marketplace pins 12 public sources',async()=>withServer(async base=>{
  assert.equal(CATALOG.length,12);assert.equal(manifest.downloads.length,12);
- for(const entry of manifest.downloads){const path='/downloads/'+entry.filename;const response=await fetch(base+path);assert.equal(response.status,200);assert.equal(response.headers.get('content-type'),'application/zip');assert.equal(response.headers.get('content-disposition'),`attachment; filename="${entry.filename}"`);assert.match(response.headers.get('cache-control'),/immutable/);const bytes=Buffer.from(await response.arrayBuffer());assert.equal(bytes.length,entry.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),entry.sha256);const head=await fetch(base+path,{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');}
+ for(const entry of [...manifest.downloads,...(manifest.archived||[])]){const path='/downloads/'+entry.filename;const response=await fetch(base+path);assert.equal(response.status,200);assert.equal(response.headers.get('content-type'),'application/zip');assert.equal(response.headers.get('content-disposition'),`attachment; filename="${entry.filename}"`);assert.match(response.headers.get('cache-control'),/immutable/);const bytes=Buffer.from(await response.arrayBuffer());assert.equal(bytes.length,entry.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),entry.sha256);const head=await fetch(base+path,{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');}
  const result=await fetch(base+'/marketplace.json');assert.equal(result.status,200);const data=await result.json();assert.deepEqual(data,MARKETPLACE);assert.equal(data.plugins.length,12);for(const p of data.plugins){assert.equal(p.source.source,'github');assert.match(p.source.repo,/^samihalawa\//);assert.match(p.source.sha,/^[a-f0-9]{40}$/);assert.match(p.source.ref,/^v\d+\.\d+\.\d+$/);assert.notEqual(p.name,'tenderloop');}
  const publicManifest=await(await fetch(base+'/downloads/manifest.json')).json();assert.deepEqual(publicManifest,manifest);
  assert.equal((await fetch(base+'/downloads/not-listed.zip')).status,404);assert.equal((await fetch(base+'/downloads/../catalog.js')).status,404);
@@ -44,3 +44,25 @@ test('search metadata covers meaningful topics and official sources with accent-
  const probes={'ine-evidence':'estadistica','boe-impact':'legislacion','borme-intelligence':'sociedad','ayudas-espana':'financiacion','licita-espana':'contratacion','catastro-pro':'vivienda','spain-open-data':'datos abiertos','bunq-banking-mcp':'suscripciones','morning-operator':'tareas','magicinterview':'entrevistas','linkedin-godmode-plugin':'contactos','grokbot':'Grok Bot'};
  for(const p of CATALOG){assert.ok(p.keywords.length>=3,p.slug);const prefix=`data-product="${p.slug}" data-search="`;const start=html.indexOf(prefix);assert.notEqual(start,-1);const search=html.slice(start+prefix.length).split('"')[0];assert.ok(normalize(search).includes(normalize(probes[p.slug])),p.slug+' searchable by '+probes[p.slug]);if(p.source)assert.ok(search.includes(p.source),p.slug+' source searchable');}
 }));
+
+test('all public plugins have strict local privacy, terms and support pages with exact escaped document content',async()=>withServer(async base=>{
+ const {POLICY_TYPES,policyDocument,renderMarkdown}=await import('../src/policies.js');
+ const index=await fetch(base+'/politicas');assert.equal(index.status,200);const overview=await index.text();
+ for(const p of CATALOG){
+  const detail=await(await fetch(base+'/plugins/'+p.slug)).text();
+  for(const type of Object.keys(POLICY_TYPES)){
+   const path=`/plugins/${p.slug}/${type}`;assert.ok(overview.includes(path));assert.ok(detail.includes(`href="${path}"`));
+   const response=await fetch(base+path);assert.equal(response.status,200);const html=await response.text();
+   assert.ok(html.includes(`rel="canonical" href="https://aiplugins.megawebs.com${path}"`));
+   assert.ok(html.includes(renderMarkdown(policyDocument(p.slug,type))));
+   assert.doesNotMatch(html,/https?:\/\/[^\s"'<>]*github\.io/);
+  }
+ }
+ for(const path of ['/plugins/tenderloop/privacy','/plugins/no-such-plugin/terms','/plugins/boe-impact/unknown-policy','/plugins/boe-impact/privacy/extra']){const response=await fetch(base+path);assert.equal(response.status,404);assert.match(await response.text(),/No encontramos esta página/);}
+}));
+
+test('policy Markdown keeps source text inert and rejects executable links',async()=>{
+ const {renderMarkdown}=await import('../src/policies.js');
+ const html=renderMarkdown('# Policy\n\n<script>alert(1)</script>\n\n[bad](javascript:alert) [safe](https://example.com/privacy)\n\n- One\n- Two\n\n```\n<img onerror=alert(1)>\n```');
+ assert.doesNotMatch(html,/<script>|<img/);assert.match(html,/&lt;script&gt;/);assert.doesNotMatch(html,/href="javascript:/);assert.match(html,/href="https:\/\/example.com\/privacy"/);assert.match(html,/<ul><li>One<\/li><li>Two<\/li><\/ul>/);assert.match(html,/&lt;img onerror=alert\(1\)&gt;/);
+});

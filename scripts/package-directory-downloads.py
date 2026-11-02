@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Assemble public downloads without changing any plugin source or review candidate."""
 from pathlib import Path, PurePosixPath
+import argparse
 import hashlib
+import io
 import json
-import shutil
+import re
 import subprocess
 import zipfile
 
@@ -47,18 +49,56 @@ def record(slug, version, filename, platforms):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--refresh-unpublished-0.6.2", dest="refresh_unpublished_0_6_2", action="store_true",
+                        help="Refresh only the unpublished Spain 0.6.2 candidate after an authorized source correction")
+    options = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    prior_path = OUTPUT / "manifest.json"
+    prior = json.loads(prior_path.read_text()) if prior_path.exists() else {}
+    old_rows = prior.get("downloads", []) + prior.get("archived", [])
+    prior_hashes = {row["filename"]: row["sha256"] for row in old_rows}
     manifest = []
     for slug in SPAIN:
-        filename = slug + "-0.6.0.zip"
-        source = MASTER / "releases" / "openai" / "v0.6.0" / filename
-        shutil.copyfile(source, OUTPUT / filename)
-        assert source.read_bytes() == (OUTPUT / filename).read_bytes()
-        manifest.append(record(slug, "0.6.0", filename, ["chatgpt", "codex"]))
+        source = MASTER / "plugins" / slug
+        version = json.loads((source / "plugin.json").read_text())["version"]
+        assert version == "0.6.2", "Wait for the canonical Spain 0.6.2 policy migration before packaging"
+        filename = slug + "-" + version + ".zip"
+        reference = MASTER / "releases" / "openai" / "v0.6.0" / (slug + "-0.6.0.zip")
+        with zipfile.ZipFile(reference) as archive:
+            names = archive.namelist()
+        assert len(names) == 16 and "plugin.json" in names
+        release_dir = MASTER / "releases" / "openai" / ("v" + version)
+        release_dir.mkdir(parents=True, exist_ok=True)
+        release_file = release_dir / filename
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+            for name in names:
+                payload = (source / name).read_bytes()
+                assert not re.search(rb"https?://[a-zA-Z0-9_.-]+\.github\.io(?:/|\b)", payload), name
+                info = zipfile.ZipInfo(name, date_time=(2026, 11, 2, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = ((source / name).stat().st_mode & 0xFFFF) << 16
+                archive.writestr(info, payload)
+        payload = buffer.getvalue()
+        if filename in prior_hashes and not options.refresh_unpublished_0_6_2:
+            assert digest(payload) == prior_hashes[filename], "Existing version is immutable"
+        if release_file.exists() and not options.refresh_unpublished_0_6_2:
+            assert release_file.read_bytes() == payload, "Existing release archive is immutable"
+        with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+            for name in names:
+                assert archive.read(name) == (source / name).read_bytes(), name
+        release_file.write_bytes(payload)
+        (OUTPUT / filename).write_bytes(payload)
+        assert release_file.read_bytes() == (OUTPUT / filename).read_bytes()
+        manifest.append(record(slug, version, filename, ["chatgpt", "codex"]))
     filename = "magicinterview-openai-1.4.5.zip"
-    subprocess.run(["curl", "--fail", "--location", "--silent", "--show-error",
-                    "https://github.com/samihalawa/magicinterview-plugin/releases/download/v1.4.5/" + filename,
-                    "--output", str(OUTPUT / filename)], check=True)
+    if not (OUTPUT / filename).exists():
+        subprocess.run(["curl", "--fail", "--location", "--silent", "--show-error",
+                        "https://github.com/samihalawa/magicinterview-plugin/releases/download/v1.4.5/" + filename,
+                        "--output", str(OUTPUT / filename)], check=True)
+    if filename in prior_hashes:
+        assert digest((OUTPUT / filename).read_bytes()) == prior_hashes[filename], "MagicInterview archive changed"
     manifest.append(record("magicinterview", "1.4.5", filename, ["chatgpt", "codex"]))
     for slug in LOCAL:
         source = MASTER / "plugins" / slug
@@ -88,8 +128,15 @@ def main():
             for relative in included:
                 assert digest(archive.read(slug + "/" + relative.as_posix())) == digest((source / relative).read_bytes()), relative
         manifest.append(record(slug, version, filename, ["claude-code", "codex"]))
-    (OUTPUT / "manifest.json").write_text(json.dumps({"downloads": manifest}, ensure_ascii=False, indent=2) + "\n")
     assert len(manifest) == 12
+    active_files = {row["filename"] for row in manifest}
+    archived = {row["filename"]: row for row in old_rows if row["filename"] not in active_files}
+    for row in archived.values():
+        assert digest((OUTPUT / row["filename"]).read_bytes()) == row["sha256"], "Archived ZIP changed"
+    for row in manifest:
+        if row["slug"] not in SPAIN and row["filename"] in prior_hashes:
+            assert row["sha256"] == prior_hashes[row["filename"]], "Other product archive changed"
+    (OUTPUT / "manifest.json").write_text(json.dumps({"downloads": manifest, "archived": list(archived.values())}, ensure_ascii=False, indent=2) + "\n")
 
 
 if __name__ == "__main__":
