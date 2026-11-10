@@ -50,10 +50,10 @@
     },
     {
       "slug": "ine-evidence",
-      "version": "0.6.2",
-      "filename": "ine-evidence-0.6.2.zip",
-      "bytes": 1150950,
-      "sha256": "46b9f8a3eaf1a9a6e7c123b68cf962c49add192d98274b382c378f396656c391",
+      "version": "0.6.3",
+      "filename": "ine-evidence-0.6.3.zip",
+      "bytes": 1150839,
+      "sha256": "fe2dde0605452eef1768c53b7b2f460b8a896a0608b24d1e4d753b6c3b61d882",
       "platforms": [
         "chatgpt",
         "codex"
@@ -62,10 +62,10 @@
     },
     {
       "slug": "licita-espana",
-      "version": "0.6.2",
-      "filename": "licita-espana-0.6.2.zip",
-      "bytes": 1197403,
-      "sha256": "e1456cf65fa67ecd17d330f6a34d65a205c33e97299193f154aa641f1c2724a0",
+      "version": "0.6.3",
+      "filename": "licita-espana-0.6.3.zip",
+      "bytes": 1197271,
+      "sha256": "1af7d47ae0ac857d677987a4730169d9eab24868a0a906417fe26b405980ce70",
       "platforms": [
         "chatgpt",
         "codex"
@@ -74,10 +74,10 @@
     },
     {
       "slug": "spain-open-data",
-      "version": "0.6.2",
-      "filename": "spain-open-data-0.6.2.zip",
-      "bytes": 1228665,
-      "sha256": "c4b3ffe650600aa54d03154ddb3952c8ec2a5a9d400c7367053c9f6a0924e100",
+      "version": "0.6.3",
+      "filename": "spain-open-data-0.6.3.zip",
+      "bytes": 1228497,
+      "sha256": "627dd774c7db413113ef9f31d8069e2bc41446f29d9b101155e4ac58205d15c0",
       "platforms": [
         "chatgpt",
         "codex"
@@ -146,6 +146,42 @@
     }
   ],
   "archived": [
+    {
+      "slug": "ine-evidence",
+      "version": "0.6.2",
+      "filename": "ine-evidence-0.6.2.zip",
+      "bytes": 1150950,
+      "sha256": "46b9f8a3eaf1a9a6e7c123b68cf962c49add192d98274b382c378f396656c391",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "licita-espana",
+      "version": "0.6.2",
+      "filename": "licita-espana-0.6.2.zip",
+      "bytes": 1197403,
+      "sha256": "e1456cf65fa67ecd17d330f6a34d65a205c33e97299193f154aa641f1c2724a0",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "spain-open-data",
+      "version": "0.6.2",
+      "filename": "spain-open-data-0.6.2.zip",
+      "bytes": 1228665,
+      "sha256": "c4b3ffe650600aa54d03154ddb3952c8ec2a5a9d400c7367053c9f6a0924e100",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
     {
       "slug": "ayudas-espana",
       "version": "0.6.2",

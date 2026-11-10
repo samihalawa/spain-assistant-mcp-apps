@@ -8,6 +8,9 @@ const sourceExamples = {
  'boe-impact': ['Localiza el artículo 118 en BOE-A-2017-12902 y cita el identificador de bloque y el enlace oficial.', 'Abre el texto consolidado del BOE y usa el identificador de bloque para localizar el artículo.'],
  'borme-intelligence': ['Busca actos de NEMENTIUM TECHNOLOGIES en el BORME de Madrid del 20 de octubre de 2026 y cita el anuncio.', 'El ejemplo usa una fecha histórica. Abre el anuncio oficial para comprobar la sociedad y el acto publicado.'],
  'catastro-pro': ['Consulta 2749704YJ0624N0001DI y distingue superficie construida y superficie de parcela, con unidades.', 'Revisa la ficha descriptiva pública y conserva los avisos cuando falte un dato.'],
+ 'licita-espana': ['Busca licitaciones de servicios en una página de PLACSP y devuelve hasta dos resultados con sus enlaces.', 'Revisa qué parte del feed de PLACSP se consultó y abre la ficha oficial para comprobar el plazo.'],
+ 'ine-evidence': ['Consulta las dos últimas observaciones disponibles de la serie INE IPC251852 e indica su periodo y unidad.', 'Comprueba el periodo y la unidad antes de interpretar la variación. La serie puede ser histórica.'],
+ 'spain-open-data': ['Busca hasta seis conjuntos de datos de vivienda en la primera página de datos.gob.es y cita sus fichas.', 'Abre la ficha del catálogo para comprobar el publicador, el formato y la licencia de reutilización.'],
 };
 function installLink(plugin, platform) {
  return `/plugins/${plugin.slug}#tab-${platform}`;

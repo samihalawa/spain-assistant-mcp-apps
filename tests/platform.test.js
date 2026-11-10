@@ -51,8 +51,12 @@ test('Spanish product links open the requested install tab and surface a version
   'boe-impact':'BOE-A-2017-12902',
   'borme-intelligence':'NEMENTIUM TECHNOLOGIES',
   'catastro-pro':'2749704YJ0624N0001DI',
+  'licita-espana':'licitaciones de servicios',
+  'ine-evidence':'IPC251852',
+  'spain-open-data':'conjuntos de datos de vivienda',
  };
  const directory=await(await fetch(base+'/categorias/espana')).text();
+ assert.deepEqual(Object.keys(examples).sort(),CATALOG.filter(item=>item.category==='espana').map(item=>item.slug).sort());
  for(const [slug,sample] of Object.entries(examples)){
   const product=CATALOG.find(item=>item.slug===slug);
   const page=await(await fetch(base+'/plugins/'+slug)).text();
