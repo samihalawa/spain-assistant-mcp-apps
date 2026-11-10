@@ -26,9 +26,13 @@ test("seven distinct, read-only tools have real MCP Apps resources",async()=>{
    assert.equal(tool.annotations.readOnlyHint,true);
    assert.equal(tool.annotations.destructiveHint,false);
    assert.equal(tool.annotations.openWorldHint,true);
+   assert.deepEqual(tool._meta.securitySchemes,[{type:"noauth"}]);
    assert.equal(tool._meta.ui.resourceUri,`ui://spain-assistant/${p.slug}/v3.html`);
+   const csp={connectDomains:[],resourceDomains:[],frameDomains:[]};
+   assert.deepEqual(resources.find(r=>r.uri===tool._meta.ui.resourceUri)?._meta?.ui?.csp,csp);
    const r=await client.readResource({uri:tool._meta.ui.resourceUri});
    assert.equal(r.contents[0].mimeType,"text/html;profile=mcp-app");
+   assert.deepEqual(r.contents[0]._meta?.ui?.csp,csp);
    assert.ok(r.contents[0].text.includes("<html"));
    assert.ok(r.contents[0].text.includes(p.slug));
   }

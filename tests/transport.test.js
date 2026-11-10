@@ -9,6 +9,14 @@ async function withServer(fn) {
  const server=createHttpServer(); await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  try {await fn(`http://127.0.0.1:${server.address().port}`);} finally {await new Promise(resolve=>server.close(resolve));}
 }
+function setTestEnv(t,key,value){
+ const previous=process.env[key];
+ process.env[key]=value;
+ t.after(()=>{
+  if(previous===undefined)delete process.env[key];
+  else process.env[key]=previous;
+ });
+}
 test('all seven scoped transports expose exactly one strict domain tool and its resource',async()=>{
  await withServer(async base=>{
   for(const p of PRODUCTS){
@@ -71,5 +79,63 @@ test('OpenAI ownership challenge serves exact public bytes only at its GET path'
   assert.equal(await response.text(),'T6ZiXlZrSBR-G_bxEWWAR2DqmGgQDRnhlDAG9OCsFcw');
   assert.equal((await fetch(base+path+'/extra')).status,404);
   assert.equal((await fetch(base+path,{method:'POST'})).status,404);
+ });
+});
+
+test('provider budget covers batched calls without blocking discovery through the same peer',async t=>{
+ setTestEnv(t,'MAX_IP_PER_MIN','2');
+ setTestEnv(t,'MAX_MCP_DISCOVERY_PER_MIN','100');
+ await withServer(async base=>{
+  const endpoint=`${base}/mcp/boe-impact`;
+  const post=body=>fetch(endpoint,{method:'POST',headers:{'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify(body)});
+  const call=id=>({jsonrpc:'2.0',id,method:'tools/call',params:{name:'unknown_tool',arguments:{}}});
+  assert.equal((await fetch(endpoint,{method:'DELETE'})).status,200);
+  const batch=await post([call(1),call(2)]);
+  assert.equal(batch.status,200);
+  assert.equal((await batch.json()).length,2);
+  const blocked=await post(call(3));
+  assert.equal(blocked.status,429);
+  assert.equal(blocked.headers.get('retry-after'),'60');
+  await blocked.text();
+  for(const p of PRODUCTS){
+   const client=new Client({name:'discovery-budget-test',version:'1.0.0'});
+   try{
+    await client.connect(new StreamableHTTPClientTransport(new URL(`${base}/mcp/${p.slug}`)));
+    assert.equal((await client.listTools()).tools[0].name,p.tool);
+    const {resources}=await client.listResources();
+    assert.equal(resources.length,1);
+    assert.equal((await client.readResource({uri:resources[0].uri})).contents.length,1);
+   }finally{await client.close();}
+  }
+ });
+});
+
+test('discovery is bounded independently, including metadata batches',async t=>{
+ setTestEnv(t,'MAX_IP_PER_MIN','1');
+ setTestEnv(t,'MAX_MCP_DISCOVERY_PER_MIN','2');
+ await withServer(async base=>{
+  const endpoint=`${base}/mcp`;
+  const post=body=>fetch(endpoint,{method:'POST',headers:{'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify(body)});
+  const list=id=>({jsonrpc:'2.0',id,method:'tools/list'});
+  const call={jsonrpc:'2.0',id:101,method:'tools/call',params:{name:'unknown_tool',arguments:{}}};
+
+  const oversized=await post(Array.from({length:100},(_,i)=>list(i+1)));
+  assert.equal(oversized.status,400);
+  assert.match((await oversized.json()).error.message,/batch exceeds 4 non-tool messages/);
+
+  assert.equal((await fetch(endpoint,{method:'DELETE'})).status,200);
+  const listed=await post(list(102));
+  assert.equal(listed.status,200);
+  assert.equal((await listed.json()).result.tools.length,7);
+
+  const blocked=await post([list(103),call]);
+  assert.equal(blocked.status,429);
+  await blocked.text();
+  const allowed=await post(call);
+  assert.equal(allowed.status,200);
+  assert.equal((await allowed.json()).result.isError,true);
+  const exhausted=await post(call);
+  assert.equal(exhausted.status,429);
+  await exhausted.text();
  });
 });

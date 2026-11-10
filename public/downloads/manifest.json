@@ -2,10 +2,10 @@
   "downloads": [
     {
       "slug": "ayudas-espana",
-      "version": "0.6.2",
-      "filename": "ayudas-espana-0.6.2.zip",
+      "version": "0.6.3",
+      "filename": "ayudas-espana-0.6.3.zip",
       "bytes": 1244167,
-      "sha256": "f3c3d5a3df83dbefa2d38ac8d20610c4dd3470d9e132e7596b2d0bcd6dbc97e9",
+      "sha256": "394587117d80d987d59a742d1b69f872a2d71e3f340723b2f1d61262072ff25e",
       "platforms": [
         "chatgpt",
         "codex"
@@ -14,10 +14,10 @@
     },
     {
       "slug": "boe-impact",
-      "version": "0.6.2",
-      "filename": "boe-impact-0.6.2.zip",
-      "bytes": 1176378,
-      "sha256": "83f7baff438108ba7a9d9d85597fa0d73abbdfb0b1b5e632583edf2b04c44004",
+      "version": "0.6.3",
+      "filename": "boe-impact-0.6.3.zip",
+      "bytes": 1176250,
+      "sha256": "964741611015c13858af0d2bc1c05670a126ca5e6d17b3f4a2bccda363539453",
       "platforms": [
         "chatgpt",
         "codex"
@@ -26,10 +26,10 @@
     },
     {
       "slug": "borme-intelligence",
-      "version": "0.6.2",
-      "filename": "borme-intelligence-0.6.2.zip",
-      "bytes": 1145768,
-      "sha256": "6b7a2dd37eb39a41f382ed70f885e42685a3db109a6e63811d2571559fe136bc",
+      "version": "0.6.3",
+      "filename": "borme-intelligence-0.6.3.zip",
+      "bytes": 1145745,
+      "sha256": "72046a2928f65cf48f2fa9bdcfe7ecf464ec944c3b2589c58af48e65edd376aa",
       "platforms": [
         "chatgpt",
         "codex"
@@ -38,10 +38,10 @@
     },
     {
       "slug": "catastro-pro",
-      "version": "0.6.2",
-      "filename": "catastro-pro-0.6.2.zip",
-      "bytes": 1219020,
-      "sha256": "d2faaa92bec49fa61091f6e46225749d71a88ad89cd157dbe81adf6b1bd41efa",
+      "version": "0.6.3",
+      "filename": "catastro-pro-0.6.3.zip",
+      "bytes": 1218857,
+      "sha256": "045e071157e613f7f2a18bc3ee02799213f5c2a2855c48688157aa65a063c536",
       "platforms": [
         "chatgpt",
         "codex"
@@ -146,6 +146,54 @@
     }
   ],
   "archived": [
+    {
+      "slug": "ayudas-espana",
+      "version": "0.6.2",
+      "filename": "ayudas-espana-0.6.2.zip",
+      "bytes": 1244167,
+      "sha256": "f3c3d5a3df83dbefa2d38ac8d20610c4dd3470d9e132e7596b2d0bcd6dbc97e9",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "boe-impact",
+      "version": "0.6.2",
+      "filename": "boe-impact-0.6.2.zip",
+      "bytes": 1176378,
+      "sha256": "83f7baff438108ba7a9d9d85597fa0d73abbdfb0b1b5e632583edf2b04c44004",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "borme-intelligence",
+      "version": "0.6.2",
+      "filename": "borme-intelligence-0.6.2.zip",
+      "bytes": 1145768,
+      "sha256": "6b7a2dd37eb39a41f382ed70f885e42685a3db109a6e63811d2571559fe136bc",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
+    {
+      "slug": "catastro-pro",
+      "version": "0.6.2",
+      "filename": "catastro-pro-0.6.2.zip",
+      "bytes": 1219020,
+      "sha256": "d2faaa92bec49fa61091f6e46225749d71a88ad89cd157dbe81adf6b1bd41efa",
+      "platforms": [
+        "chatgpt",
+        "codex"
+      ],
+      "files": 16
+    },
     {
       "slug": "ayudas-espana",
       "version": "0.6.0",

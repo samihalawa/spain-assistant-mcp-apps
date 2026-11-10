@@ -8,7 +8,7 @@ export const CATEGORIES = Object.freeze([
  {slug:'comunicacion',name:'Comunicación',description:'Herramientas para conversaciones profesionales y trabajo en red.'},
  {slug:'desarrollo',name:'Desarrollo',description:'Integraciones y herramientas para trabajar con otros asistentes.'},
 ]);
-const spain = (slug,name,summary,details,requirements,source) => ({slug,name,version:'0.6.2',category:'espana',summary,details,requirements,source,icon:`${slug}.png`,platforms:['chatgpt','claude-code','codex'],kind:'Conector remoto + skills',endpoint:`https://aiplugins.megawebs.com/mcp/${slug}`,zip:`https://github.com/samihalawa/${slug}/releases/download/v0.6.0/${slug}-0.6.0.zip`,repository:`https://github.com/samihalawa/${slug}`,claudeCommand:null});
+const spain = (slug,name,summary,details,requirements,source) => ({slug,name,version:downloads.find(bundle=>bundle.slug===slug)?.version,category:'espana',summary,details,requirements,source,icon:`${slug}.png`,platforms:['chatgpt','claude-code','codex'],kind:'Conector remoto + skills',endpoint:`https://aiplugins.megawebs.com/mcp/${slug}`,repository:`https://github.com/samihalawa/${slug}`,claudeCommand:null});
 const SEARCH_KEYWORDS = Object.freeze({
  'ayudas-espana':['ayudas','subvenciones','financiación','convocatorias','autónomos'],
  'licita-espana':['licitaciones','contratación pública','concursos','proveedores','CPV'],
@@ -46,10 +46,10 @@ export const PLATFORMS=Object.freeze([{slug:'chatgpt',name:'ChatGPT'},{slug:'cla
 export const findProduct=slug=>CATALOG.find(p=>p.slug===slug);
 
 const SOURCE_SHAS={
- 'ayudas-espana':'47f5ca08ac5e6f892c755b51e1ad22b7a0738d98',
- 'boe-impact':'efadeddc5d20007e6b3514d32bdc41b6c06f52ab',
- 'borme-intelligence':'8e8d31192c43a9fac149ec84c9070b77a5e4d785',
- 'catastro-pro':'1cbe31723039403c3be56a4dc3f8e0ee080506a3',
+ 'ayudas-espana':'8cdcce713c98a5d3110185165421e7a0aedb8dfa',
+ 'boe-impact':'79c4f8a418c5cf5dbe155961f34126d324f11fad',
+ 'borme-intelligence':'61334a67cacffdda5f55d7bba4c8d5dcaf505f23',
+ 'catastro-pro':'e3e11668874503327a9208a914117ed7d7c6f0fe',
  'ine-evidence':'ac060c13bed03a22513f1bbeb9d2e7fc247eacd3',
  'licita-espana':'58f989af7f4cfe1b9fe3dbe9fc483862f7bd6dfd',
  'spain-open-data':'3bc59c7b7191b60c74844b4a2d4d609b49c70502',

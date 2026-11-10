@@ -50,19 +50,24 @@ def record(slug, version, filename, platforms):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--refresh-unpublished-0.6.2", dest="refresh_unpublished_0_6_2", action="store_true",
-                        help="Refresh only the unpublished Spain 0.6.2 candidate after an authorized source correction")
+    parser.add_argument("--spain-plugin", action="append", choices=SPAIN,
+                        help="Package a selected Spain plugin and retain the other public downloads; repeat to select more")
     options = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
     prior_path = OUTPUT / "manifest.json"
     prior = json.loads(prior_path.read_text()) if prior_path.exists() else {}
     old_rows = prior.get("downloads", []) + prior.get("archived", [])
     prior_hashes = {row["filename"]: row["sha256"] for row in old_rows}
+    prior_downloads = {row["slug"]: row for row in prior.get("downloads", [])}
+    selected = set(options.spain_plugin or SPAIN)
     manifest = []
     for slug in SPAIN:
+        if slug not in selected:
+            manifest.append(prior_downloads[slug])
+            continue
         source = MASTER / "plugins" / slug
         version = json.loads((source / "plugin.json").read_text())["version"]
-        assert version == "0.6.2", "Wait for the canonical Spain 0.6.2 policy migration before packaging"
+        assert re.fullmatch(r"\d+\.\d+\.\d+", version), version
         filename = slug + "-" + version + ".zip"
         reference = MASTER / "releases" / "openai" / "v0.6.0" / (slug + "-0.6.0.zip")
         with zipfile.ZipFile(reference) as archive:
@@ -81,15 +86,20 @@ def main():
                 info.external_attr = ((source / name).stat().st_mode & 0xFFFF) << 16
                 archive.writestr(info, payload)
         payload = buffer.getvalue()
-        if filename in prior_hashes and not options.refresh_unpublished_0_6_2:
+        if filename in prior_hashes:
             assert digest(payload) == prior_hashes[filename], "Existing version is immutable"
-        if release_file.exists() and not options.refresh_unpublished_0_6_2:
+        if release_file.exists():
             assert release_file.read_bytes() == payload, "Existing release archive is immutable"
         with zipfile.ZipFile(io.BytesIO(payload)) as archive:
             for name in names:
                 assert archive.read(name) == (source / name).read_bytes(), name
-        release_file.write_bytes(payload)
-        (OUTPUT / filename).write_bytes(payload)
+        if not release_file.exists():
+            release_file.write_bytes(payload)
+        output_file = OUTPUT / filename
+        if output_file.exists():
+            assert output_file.read_bytes() == payload, "Existing public archive is immutable"
+        else:
+            output_file.write_bytes(payload)
         assert release_file.read_bytes() == (OUTPUT / filename).read_bytes()
         manifest.append(record(slug, version, filename, ["chatgpt", "codex"]))
     filename = "magicinterview-openai-1.4.5.zip"
@@ -101,6 +111,9 @@ def main():
         assert digest((OUTPUT / filename).read_bytes()) == prior_hashes[filename], "MagicInterview archive changed"
     manifest.append(record("magicinterview", "1.4.5", filename, ["chatgpt", "codex"]))
     for slug in LOCAL:
+        if options.spain_plugin:
+            manifest.append(prior_downloads[slug])
+            continue
         source = MASTER / "plugins" / slug
         version = json.loads((source / "plugin.json").read_text())["version"]
         filename = slug + "-" + version + ".zip"
@@ -134,8 +147,9 @@ def main():
     for row in archived.values():
         assert digest((OUTPUT / row["filename"]).read_bytes()) == row["sha256"], "Archived ZIP changed"
     for row in manifest:
-        if row["slug"] not in SPAIN and row["filename"] in prior_hashes:
+        if row["filename"] in prior_hashes:
             assert row["sha256"] == prior_hashes[row["filename"]], "Other product archive changed"
+            assert digest((OUTPUT / row["filename"]).read_bytes()) == row["sha256"], "Existing public archive changed"
     (OUTPUT / "manifest.json").write_text(json.dumps({"downloads": manifest, "archived": list(archived.values())}, ensure_ascii=False, indent=2) + "\n")
 
 

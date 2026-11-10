@@ -34,22 +34,14 @@ for (const entry of [...downloadManifest.downloads,...(downloadManifest.archived
  platformAssets.set('/downloads/'+entry.filename, {type:'application/zip',body:readFileSync(resolve(dir,'../public/downloads',entry.filename)),filename:entry.filename});
 }
 const MAX_REQUEST_BYTES = 30000;
+const MAX_BATCH_DISCOVERY_MESSAGES = 4;
 const windowMs = 60_000;
-const configuredLimit = Number(process.env.MAX_IP_PER_MIN || 100);
-const MAX_IP_PER_MIN = Number.isSafeInteger(configuredLimit) && configuredLimit > 0 ? configuredLimit : 100;
 const originList = (process.env.ALLOWED_ORIGINS || 'https://aiplugins.megawebs.com,https://chatgpt.com,https://chat.openai.com,https://claude.ai').split(',').map(x => x.trim()).filter(Boolean);
 const allowedOrigins = new Set(originList);
 const allowedHosts = new Set((process.env.ALLOWED_HOSTS || 'aiplugins.megawebs.com,localhost,127.0.0.1,[::1]').split(',').map(x => x.trim().toLowerCase()).filter(Boolean));
-const counters = new Map();
-function allow(ip) {
- const stamp = Date.now();
- for (const [key, v] of counters) if (stamp - v.time > windowMs) counters.delete(key);
- const state = counters.get(ip);
- if (!state) {
-  if (counters.size >= 10000) return false;
-  counters.set(ip, {time: stamp, count: 1}); return true;
- }
- state.count++; return state.count <= MAX_IP_PER_MIN;
+function requestBudget(name, fallback) {
+ const value = Number(process.env[name]);
+ return Number.isSafeInteger(value) && value > 0 ? value : fallback;
 }
 const sourceSchema = z.object({
  url: z.string().url(), retrieved_at: z.string(), sha256: z.string().regex(/^[a-f0-9]{64}$/),
@@ -72,14 +64,16 @@ function createMcp(products) {
  });
  for (const p of products) {
   const uri = `ui://spain-assistant/${p.slug}/v3.html`;
-  registerAppResource(server, p.name + ' results', uri, {}, async () => ({
-   contents: [{uri, mimeType: RESOURCE_MIME_TYPE, text: templates.get(p.slug), _meta: {ui: {prefersBorder: true}}}],
+  // The widget is self-contained. Official source links are user-initiated navigation.
+  const resourceMeta = {ui: {prefersBorder: true, csp: {connectDomains: [], resourceDomains: [], frameDomains: []}}};
+  registerAppResource(server, p.name + ' results', uri, {_meta: resourceMeta}, async () => ({
+   contents: [{uri, mimeType: RESOURCE_MIME_TYPE, text: templates.get(p.slug), _meta: resourceMeta}],
   }));
   registerAppTool(server, p.tool, {
    title: p.name + ' · ' + p.label, description: p.description,
    inputSchema: z.object(p.fields).strict(), outputSchema: resultSchema,
    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true},
-   _meta: {ui: {resourceUri: uri}, 'openai/toolInvocation/invoking': 'Consultando fuente oficial…', 'openai/toolInvocation/invoked': 'Consulta completada'},
+   _meta: {ui: {resourceUri: uri}, securitySchemes: [{type: 'noauth'}], 'openai/toolInvocation/invoking': 'Consultando fuente oficial…', 'openai/toolInvocation/invoked': 'Consulta completada'},
   }, async args => {
    const correlation_id = randomUUID(), started = Date.now();
    let result;
@@ -127,6 +121,20 @@ function readBody(req) {
 }
 export const PORT = Number(process.env.PORT || 8787);
 export function createHttpServer() {
+ const counters = new Map();
+ const maxToolCallsPerMinute = requestBudget('MAX_IP_PER_MIN', 100);
+ const maxDiscoveryPerMinute = requestBudget('MAX_MCP_DISCOVERY_PER_MIN', 1000);
+ function allow(ip, toolCalls, discovery) {
+  const stamp = Date.now();
+  for (const [key, state] of counters) if (stamp - state.time >= windowMs) counters.delete(key);
+  const state = counters.get(ip);
+  if (!state && counters.size >= 10000) return false;
+  const toolTotal = (state?.toolTotal ?? 0) + toolCalls;
+  const discoveryTotal = (state?.discoveryTotal ?? 0) + discovery;
+  if (toolTotal > maxToolCallsPerMinute || discoveryTotal > maxDiscoveryPerMinute) return false;
+  counters.set(ip, {time: state?.time ?? stamp, toolTotal, discoveryTotal});
+  return true;
+ }
  const http = httpServer(async (req, res) => {
   let path, host;
   try { path = new URL(req.url || '/', 'http://localhost').pathname; host = new URL('http://' + req.headers.host).hostname.toLowerCase(); }
@@ -159,13 +167,22 @@ export function createHttpServer() {
   if (!products) { reject(res, 404, 'Not found'); return; }
   if (req.method === 'OPTIONS') { res.writeHead(204, {'Access-Control-Allow-Headers': 'content-type, mcp-session-id, mcp-protocol-version, accept', 'Access-Control-Allow-Methods': 'POST, GET, DELETE, OPTIONS'}).end(); return; }
   if (!['POST', 'GET', 'DELETE'].includes(req.method)) { reject(res, 405, 'Method not allowed'); return; }
-  if (!allow(req.socket.remoteAddress || 'unknown')) { res.writeHead(429, {'Retry-After': '60'}).end('Rate limited'); return; }
   let body;
   if (req.method === 'POST') {
    if ((req.headers['content-type'] || '').split(';')[0].trim().toLowerCase() !== 'application/json') { reject(res, 415, 'Content-Type must be application/json'); return; }
    if (Number(req.headers['content-length'] || 0) > MAX_REQUEST_BYTES) { req.resume(); reject(res, 413, 'MCP body exceeds size limit'); return; }
    try { body = await readBody(req); }
    catch (error) { reject(res, error.status || 400, error.message, error.status === 400 ? -32700 : -32600); return; }
+  }
+  // Scans and transport requests have their own budget, independent of provider calls.
+  const messages = Array.isArray(body) ? body : [body];
+  const toolCalls = messages.filter(message => message?.method === 'tools/call').length;
+  const discovery = Math.max(1, messages.length) - toolCalls;
+  if (discovery > MAX_BATCH_DISCOVERY_MESSAGES) {
+   reject(res, 400, `MCP batch exceeds ${MAX_BATCH_DISCOVERY_MESSAGES} non-tool messages`); return;
+  }
+  if (!allow(req.socket.remoteAddress || 'unknown', toolCalls, discovery)) {
+   res.writeHead(429, {'Retry-After': '60'}).end('Rate limited'); return;
   }
   res.setHeader('Access-Control-Expose-Headers', 'Mcp-Session-Id');
   const server = createMcp(products);

@@ -68,7 +68,8 @@ No secret environment variables are required.
 | `PYTHON_BIN` | `python3`; operator-controlled interpreter |
 | `PYTHON_TIMEOUT_MS` | `35000`; capped at 60000 |
 | `MAX_CONCURRENT_PYTHON` | `3`; bounded between 1 and 6 |
-| `MAX_IP_PER_MIN` | `100` requests per direct peer IP; reverse-proxy peers share this allowance |
+| `MAX_IP_PER_MIN` | `100` MCP tool calls per direct peer IP per minute; reverse-proxy peers share this allowance |
+| `MAX_MCP_DISCOVERY_PER_MIN` | `1000` non-tool MCP messages per direct peer IP per minute, with at most four per batch |
 | `ALLOWED_HOSTS` | `aiplugins.megawebs.com,localhost,127.0.0.1,[::1]`; exact hostnames, without ports |
 | `ALLOWED_ORIGINS` | Exact origins `https://aiplugins.megawebs.com`, `https://chatgpt.com`, `https://chat.openai.com`, `https://claude.ai` |
 | `SOURCE_COMMIT` | Optional build revision reported by health; unset reports null |

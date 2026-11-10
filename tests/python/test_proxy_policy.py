@@ -92,7 +92,11 @@ class ProxyPolicy(unittest.TestCase):
         self.assertEqual(transport.call_count, 1)
         # The stock verified HTTPS handler/connection remain in the opener.
         self.assertIs(transport.call_args.args[0], c.urllib.request.http.client.HTTPSConnection)
-        self.assertIsNone(transport.call_args.kwargs['context'])
+        # Newer Python versions construct the default SSLContext in HTTPSHandler.
+        context = transport.call_args.kwargs['context']
+        if context is not None:
+            self.assertTrue(context.check_hostname)
+            self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
 
 
 if __name__ == '__main__':
