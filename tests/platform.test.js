@@ -45,6 +45,28 @@ test('search metadata covers meaningful topics and official sources with accent-
  for(const p of CATALOG){assert.ok(p.keywords.length>=3,p.slug);const prefix=`data-product="${p.slug}" data-search="`;const start=html.indexOf(prefix);assert.notEqual(start,-1);const search=html.slice(start+prefix.length).split('"')[0];assert.ok(normalize(search).includes(normalize(probes[p.slug])),p.slug+' searchable by '+probes[p.slug]);if(p.source)assert.ok(search.includes(p.source),p.slug+' source searchable');}
 }));
 
+test('Spanish product links open the requested install tab and surface a versioned example',async()=>withServer(async base=>{
+ const examples={
+  'ayudas-espana':'número BDNS',
+  'boe-impact':'BOE-A-2017-12902',
+  'borme-intelligence':'NEMENTIUM TECHNOLOGIES',
+  'catastro-pro':'2749704YJ0624N0001DI',
+ };
+ const directory=await(await fetch(base+'/categorias/espana')).text();
+ for(const [slug,sample] of Object.entries(examples)){
+  const product=CATALOG.find(item=>item.slug===slug);
+  const page=await(await fetch(base+'/plugins/'+slug)).text();
+  for(const platform of product.platforms){
+   assert.ok(directory.includes(`href="/plugins/${slug}#tab-${platform}"`));
+   assert.ok(page.includes(`id="tab-${platform}"`));
+  }
+  assert.ok(page.includes(`href="${product.repository}/releases/tag/v${product.version}"`));
+  assert.ok(page.includes(product.zip));
+  assert.ok(page.includes('aria-label="Copiar consulta de ejemplo"'));
+  assert.ok(page.includes(sample));
+ }
+}));
+
 test('all public plugins have strict local privacy, terms and support pages with exact escaped document content',async()=>withServer(async base=>{
  const {POLICY_TYPES,policyDocument,renderMarkdown}=await import('../src/policies.js');
  const index=await fetch(base+'/politicas');assert.equal(index.status,200);const overview=await index.text();
