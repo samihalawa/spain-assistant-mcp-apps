@@ -4,12 +4,12 @@ Seven read-only Spanish public-data workflows share one maintained Streamable HT
 
 | Plugin | Endpoint path | Tool | Official source |
 | --- | --- | --- | --- |
-| Licita España | `/mcp/licita-espana` | `find_spanish_public_tenders` | PLACSP Atom syndication |
-| Ayudas España | `/mcp/ayudas-espana` | `compare_spanish_public_grants` | BDNS public API |
-| BOE Impact | `/mcp/boe-impact` | `find_spanish_law_articles` | BOE consolidated-law API |
-| BORME Intelligence | `/mcp/borme-intelligence` | `review_spanish_company_events` | BOE BORME summaries and notice XML |
-| Catastro Pro | `/mcp/catastro-pro` | `inspect_spanish_cadastral_property` | Catastro non-protected-data and coordinate services |
-| INE Evidence | `/mcp/ine-evidence` | `compare_spanish_official_statistics` | INE Tempus JSON API |
+| Spain Tenders & Contracts | `/mcp/licita-espana` | `find_spanish_public_tenders` | PLACSP Atom syndication |
+| Spain Grants & Subsidies | `/mcp/ayudas-espana` | `compare_spanish_public_grants` | BDNS public API |
+| Spain Laws & BOE | `/mcp/boe-impact` | `find_spanish_law_articles` | BOE consolidated-law API |
+| Spain Companies | `/mcp/borme-intelligence` | `review_spanish_company_events` | BOE BORME summaries and notice XML |
+| Spain Property & Catastro | `/mcp/catastro-pro` | `inspect_spanish_cadastral_property` | Catastro non-protected-data and coordinate services |
+| Spain Statistics & INE | `/mcp/ine-evidence` | `compare_spanish_official_statistics` | INE Tempus JSON API |
 | Spain Open Data | `/mcp/spain-open-data` | `compare_spanish_open_datasets` | datos.gob.es metadata API |
 
 `/mcp` exposes all seven tools. Both shared and scoped paths perform a genuine MCP initialize/tools-list/tools-call lifecycle. They use stateless JSON response mode; the official SDK handles protocol negotiation. Responses contain structured results and a short text summary. Compatible hosts can also read the bundled MCP App HTML resource. UI support is optional for obtaining results.

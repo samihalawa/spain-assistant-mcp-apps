@@ -1,4 +1,4 @@
-# Privacidad — INE Evidence 0.6.2
+# Privacidad — Spain Statistics & INE 0.6.2
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 

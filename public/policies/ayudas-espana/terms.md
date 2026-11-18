@@ -1,4 +1,4 @@
-# Condiciones — Ayudas España
+# Condiciones — Spain Grants & Subsidies
 
 Las instrucciones originales se distribuyen bajo la licencia MIT del repositorio. Esa licencia no concede derechos sobre publicaciones oficiales, bases de datos, marcas ni documentos de terceros. Consulta las condiciones de cada fuente para su reutilización.
 

@@ -1,4 +1,4 @@
-# Soporte — BOE Impact
+# Soporte — Spain Laws & BOE
 
 Contacto: sami@samihalawa.com · https://github.com/samihalawa/boe-impact/issues
 

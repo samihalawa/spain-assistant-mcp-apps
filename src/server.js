@@ -70,7 +70,7 @@ function createMcp(products) {
    contents: [{uri, mimeType: RESOURCE_MIME_TYPE, text: templates.get(p.slug), _meta: resourceMeta}],
   }));
   registerAppTool(server, p.tool, {
-   title: p.name + ' · ' + p.label, description: p.description,
+   title: p.title, description: p.description,
    inputSchema: z.object(p.fields).strict(), outputSchema: resultSchema,
    annotations: {readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true},
    _meta: {ui: {resourceUri: uri}, securitySchemes: [{type: 'noauth'}], 'openai/toolInvocation/invoking': 'Consultando fuente oficial…', 'openai/toolInvocation/invoked': 'Consulta completada'},

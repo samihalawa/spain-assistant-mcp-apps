@@ -5,12 +5,12 @@ const byId = x => doc.getElementById(x);
 const params = new URLSearchParams(location.search);
 const PRODUCT = "__PRODUCT_SLUG__";
 const META = {
- "licita-espana":["Licita España","Decide qué licitación merece tu tiempo","#255b83"],
- "ayudas-espana":["Ayudas España","Revisa convocatorias, requisitos y plazos","#1d7458"],
- "boe-impact":["BOE Impact","Encuentra y compara textos legales oficiales","#76488d"],
- "borme-intelligence":["BORME Intelligence","Revisa actos societarios publicados","#99532e"],
- "catastro-pro":["Catastro Pro","Una referencia, una ficha clara","#217970"],
- "ine-evidence":["INE Evidence","Comprueba cifras, periodos y comparaciones","#325b98"],
+ "licita-espana":["Spain Tenders & Contracts","Decide qué licitación merece tu tiempo","#255b83"],
+ "ayudas-espana":["Spain Grants & Subsidies","Revisa convocatorias, requisitos y plazos","#1d7458"],
+ "boe-impact":["Spain Laws & BOE","Localiza artículos de una ley del BOE","#76488d"],
+ "borme-intelligence":["Spain Companies","Revisa actos societarios publicados","#99532e"],
+ "catastro-pro":["Spain Property & Catastro","Una referencia, una ficha clara","#217970"],
+ "ine-evidence":["Spain Statistics & INE","Comprueba cifras, periodos y comparaciones","#325b98"],
  "spain-open-data":["Spain Open Data","Elige un dataset por utilidad y derechos","#70672a"]
 };
 const [name,promise,color] = META[PRODUCT] || ["Spain Evidence","Datos públicos","#175d77"];

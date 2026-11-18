@@ -1,4 +1,4 @@
-# Soporte — BORME Intelligence
+# Soporte — Spain Companies
 
 Contacto: sami@samihalawa.com · https://github.com/samihalawa/borme-intelligence/issues
 

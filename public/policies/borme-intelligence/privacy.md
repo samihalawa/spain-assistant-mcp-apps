@@ -1,4 +1,4 @@
-# Privacidad — BORME Intelligence 0.6.2
+# Privacidad — Spain Companies 0.6.2
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 
