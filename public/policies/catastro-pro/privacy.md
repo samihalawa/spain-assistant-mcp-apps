@@ -1,4 +1,4 @@
-# Privacidad — Spain Property & Catastro 0.6.2
+# Privacidad — Spain Property & Catastro
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 

@@ -5,19 +5,19 @@ const byId = x => doc.getElementById(x);
 const params = new URLSearchParams(location.search);
 const PRODUCT = "__PRODUCT_SLUG__";
 const META = {
- "licita-espana":["Spain Tenders & Contracts","Decide qué licitación merece tu tiempo","#255b83"],
- "ayudas-espana":["Spain Grants & Subsidies","Revisa convocatorias, requisitos y plazos","#1d7458"],
- "boe-impact":["Spain Laws & BOE","Localiza artículos de una ley del BOE","#76488d"],
- "borme-intelligence":["Spain Companies","Revisa actos societarios publicados","#99532e"],
- "catastro-pro":["Spain Property & Catastro","Una referencia, una ficha clara","#217970"],
- "ine-evidence":["Spain Statistics & INE","Comprueba cifras, periodos y comparaciones","#325b98"],
- "spain-open-data":["Spain Open Data","Elige un dataset por utilidad y derechos","#70672a"]
+ "licita-espana":["Spain Tenders & Contracts","Encuentra oportunidades para tu negocio","#255b83"],
+ "ayudas-espana":["Spain Grants & Subsidies","Encuentra ayudas para tu próximo proyecto","#1d7458"],
+ "boe-impact":["Spain Laws & BOE","Encuentra y cita el artículo que necesitas","#76488d"],
+ "borme-intelligence":["Spain Companies","Entiende qué ha cambiado en una empresa","#99532e"],
+ "catastro-pro":["Spain Property & Catastro","Entiende la ficha pública de un inmueble","#217970"],
+ "ine-evidence":["Spain Statistics & INE","Compara cifras con su periodo y unidad","#325b98"],
+ "spain-open-data":["Spain Open Data","Encuentra una fuente para tu análisis","#70672a"]
 };
-const [name,promise,color] = META[PRODUCT] || ["Spain Evidence","Datos públicos","#175d77"];
+const [name,promise,color] = META[PRODUCT] || ["Spain Plugins","Datos públicos de España","#175d77"];
 byId("name").textContent=name;byId("promise").textContent=promise;doc.documentElement.style.setProperty("--accent",color);
 byId("logo").textContent = name.split(" ").map(x=>x[0]).slice(0,2).join("");
 let last = null, visible = [], showingDetail=false;
-const app = new App({name:"Spain Evidence",version:"0.3.0"});
+const app = new App({name,version:"0.6.1"});
 const text = (v,max=280) => v==null?"No consta":String(typeof v==="object"?JSON.stringify(v):v).slice(0,max);
 const raw = (obj,keys) => keys.map(k=>obj?.[k]).find(x=>x!==null&&x!==undefined&&x!=="");
 const getRows = value => {

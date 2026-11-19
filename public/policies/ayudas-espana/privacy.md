@@ -1,4 +1,4 @@
-# Privacidad — Spain Grants & Subsidies 0.6.2
+# Privacidad — Spain Grants & Subsidies
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 

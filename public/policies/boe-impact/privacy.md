@@ -1,4 +1,4 @@
-# Privacidad — Spain Laws & BOE 0.6.2
+# Privacidad — Spain Laws & BOE
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 

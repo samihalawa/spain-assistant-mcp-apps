@@ -2,7 +2,7 @@
 
 Las instrucciones originales se distribuyen bajo la licencia MIT del repositorio. Esa licencia no concede derechos sobre publicaciones oficiales, bases de datos, marcas ni documentos de terceros. Consulta las condiciones de cada fuente para su reutilización.
 
-La edición 0.6.2 combina una consulta pública de solo lectura mediante un conector MCP alojado e instrucciones de lectura y redacción con las funciones autorizadas del anfitrión y documentos aportados. No es un servicio oficial, certificación, representación profesional ni garantía de resultado. Las fuentes pueden cambiar, faltar o contener errores; el asistente debe conservar fechas, origen y límites.
+La edición combina una consulta pública de solo lectura mediante un conector MCP alojado e instrucciones de lectura y redacción con las funciones autorizadas del anfitrión y documentos aportados. No es un servicio oficial, certificación, representación profesional ni garantía de resultado. Las fuentes pueden cambiar, faltar o contener errores; el asistente debe conservar fechas, origen y límites.
 
 La consolidación es informativa. La habilidad no determina automáticamente aplicabilidad, régimen transitorio o conformidad legal. Verifica las publicaciones originales para decisiones jurídicas.
 

@@ -9,105 +9,105 @@
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/ayudas-espana.git",
-        "ref": "v0.6.4",
-        "sha": "c6f03ed706aaf3187aad230f8aba275b142d47bc"
+        "ref": "v0.6.5",
+        "sha": "eb4c2279d33cafa16fe9aba832b523eb3a8deb41"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "licita-espana",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/licita-espana.git",
-        "ref": "v0.6.4",
-        "sha": "3ed9c69d2891c44cf6772d53661e170a14f377d1"
+        "ref": "v0.6.5",
+        "sha": "8ef0619aaddfcb3d69e323adca5ec23e185b9af0"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "boe-impact",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/boe-impact.git",
-        "ref": "v0.6.4",
-        "sha": "b7c6b7bbccd62e3cded7bffada652c1ba015d578"
+        "ref": "v0.6.5",
+        "sha": "a770e3ea7fb0c5ae0dadf48c3d00e48a634a8c73"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "borme-intelligence",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/borme-intelligence.git",
-        "ref": "v0.6.4",
-        "sha": "65e1386e34cf1013cdec5fe89fdd0351400c08a8"
+        "ref": "v0.6.5",
+        "sha": "76dc971f846ed6b11cf7988896ffa93525ed628b"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "catastro-pro",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/catastro-pro.git",
-        "ref": "v0.6.4",
-        "sha": "aa0215d2dab4bedad75297bc4ead1ffc111ca82d"
+        "ref": "v0.6.5",
+        "sha": "335dfe7cd23ef78811c063c80bf0baa75ba3c3de"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "ine-evidence",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/ine-evidence.git",
-        "ref": "v0.6.4",
-        "sha": "075ae87c515f0ac13ffd5e7bf6eb7a5dbe09897d"
+        "ref": "v0.6.5",
+        "sha": "62f754bc02fd68958be4c8c6d74de60aa17bcf4e"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "spain-open-data",
       "source": {
         "source": "url",
         "url": "https://github.com/samihalawa/spain-open-data.git",
-        "ref": "v0.6.4",
-        "sha": "94eb2f3bf5880abe5cd20adf671c8ce9dbb0dad2"
+        "ref": "v0.6.5",
+        "sha": "25be4c9e50b73a403cb2577ab929b9105352a427"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
       "category": "Productivity",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "name": "bunq-banking-mcp",

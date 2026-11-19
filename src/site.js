@@ -4,13 +4,13 @@ const origin='https://aiplugins.megawebs.com';
 const e=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=p=>`<img class="product-icon" src="/icons/${e(p.icon)}" alt="" width="40" height="40">`;
 const sourceExamples = {
- 'ayudas-espana': ['Busca en la primera página de BDNS hasta cuatro ayudas de digitalización. Incluye el número BDNS, las fechas publicadas y el enlace oficial.', 'Identifica cada convocatoria por su número BDNS y comprueba las fechas en la ficha oficial.'],
- 'boe-impact': ['Localiza el artículo 118 en BOE-A-2017-12902 y cita el identificador de bloque y el enlace oficial.', 'Abre el texto consolidado del BOE y usa el identificador de bloque para localizar el artículo.'],
- 'borme-intelligence': ['Busca actos de NEMENTIUM TECHNOLOGIES en el BORME de Madrid del 20 de octubre de 2026 y cita el anuncio.', 'El ejemplo usa una fecha histórica. Abre el anuncio oficial para comprobar la sociedad y el acto publicado.'],
- 'catastro-pro': ['Consulta 2749704YJ0624N0001DI y distingue superficie construida y superficie de parcela, con unidades.', 'Revisa la ficha descriptiva pública y conserva los avisos cuando falte un dato.'],
- 'licita-espana': ['Busca licitaciones de servicios en una página de PLACSP y devuelve hasta dos resultados con sus enlaces.', 'Revisa qué parte del feed de PLACSP se consultó y abre la ficha oficial para comprobar el plazo.'],
- 'ine-evidence': ['Consulta las dos últimas observaciones disponibles de la serie INE IPC251852 e indica su periodo y unidad.', 'Comprueba el periodo y la unidad antes de interpretar la variación. La serie puede ser histórica.'],
- 'spain-open-data': ['Busca hasta seis conjuntos de datos de vivienda en la primera página de datos.gob.es y cita sus fichas.', 'Abre la ficha del catálogo para comprobar el publicador, el formato y la licencia de reutilización.'],
+ 'ayudas-espana': ['Busca hasta cuatro ayudas de digitalización en España en la primera página de BDNS. Resume para qué sirve cada una e incluye el número BDNS, las fechas disponibles y el enlace oficial.', 'Úsalo para preparar una primera selección. Comprueba los plazos y requisitos de cada convocatoria en su publicación oficial.'],
+ 'boe-impact': ['Explícame qué dice el artículo 118 de la ley BOE-A-2017-12902 sobre contratos menores. Localiza su texto en el BOE, identifica la versión y enlaza el artículo.', 'Un ejemplo para pasar de una referencia legal al texto que necesitas consultar o citar. La interpretación depende del caso concreto.'],
+ 'borme-intelligence': ['¿Qué actos de NEMENTIUM TECHNOLOGIES se publicaron en el BORME de Madrid el 20 de octubre de 2026? Resume el cambio y enlaza el anuncio oficial.', 'Prueba con este ejemplo histórico; después puedes consultar otra sociedad, provincia y un periodo de hasta siete días.'],
+ 'catastro-pro': ['Explícame la ficha catastral 2749704YJ0624N0001DI de España. Distingue los datos disponibles del inmueble, las superficies con sus unidades y las coordenadas, y enlaza la fuente.', 'Sustituye la referencia por la del inmueble que quieras consultar. La ficha pública no identifica al propietario ni certifica la titularidad.'],
+ 'licita-espana': ['Busca hasta dos licitaciones de servicios en España en una página de PLACSP. Compara objeto, presupuesto y plazos disponibles y dame los enlaces oficiales.', 'Cambia servicios por tu actividad. Los resultados cubren la parte consultada del feed; confirma el plazo en la ficha de cada licitación.'],
+ 'ine-evidence': ['Compara las dos últimas observaciones disponibles de la serie INE IPC251852 de España. Explica la diferencia e indica periodos, unidades y enlace a la fuente.', 'El ejemplo utiliza un código de serie concreto. Revisa siempre los periodos: la última observación de una serie puede ser histórica.'],
+ 'spain-open-data': ['Busca hasta seis conjuntos de datos de vivienda de España en la primera página de datos.gob.es. Compara quién los publica, formatos, licencia disponible y enlaces para consultarlos.', 'Cambia vivienda por el tema de tu análisis. La búsqueda compara fichas del catálogo; revisa el archivo y su licencia en la fuente original.'],
 };
 function installLink(plugin, platform) {
  return `/plugins/${plugin.slug}#tab-${platform}`;
@@ -23,7 +23,7 @@ function productPlatformLinks(plugin) {
 function exampleSection(plugin) {
  const example = sourceExamples[plugin.slug];
  if (!example) return '';
- return `<section class="detail-section source-example"><h2>Consulta de ejemplo</h2><p>Copia esta consulta y envíala a tu asistente después de instalar el plugin.</p>${commandBlock(example[0], 'consulta de ejemplo')}<p>${e(example[1])}</p></section>`;
+ return `<section class="detail-section source-example"><h2>Prueba tu primera consulta</h2><p>Después de instalar el plugin, copia esta consulta en tu asistente. Puedes adaptar el tema o la referencia a tu caso.</p>${commandBlock(example[0], 'consulta de ejemplo')}<p>${e(example[1])}</p></section>`;
 }
 function releaseLink(plugin) {
  if (!Object.hasOwn(sourceExamples, plugin.slug)) return '';

@@ -1,4 +1,4 @@
-# Privacidad — Spain Open Data 0.6.2
+# Privacidad — Spain Open Data
 
 Editor y operador del conector: Sami Halawa. Contacto: sami@samihalawa.com.
 
