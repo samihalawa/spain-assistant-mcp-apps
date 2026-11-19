@@ -11,9 +11,14 @@ async function withServer(fn){const server=createHttpServer();await new Promise(
 test('directory renders all public products, categories and platform guides on direct requests',async()=>withServer(async base=>{
  const home=await fetch(base+'/');assert.equal(home.status,200);assert.match(home.headers.get('content-type'),/text\/html/);assert.match(home.headers.get('content-security-policy'),/script-src 'self'/);
  const html=await home.text();assert.match(html,/<html lang="es">/);assert.match(html,/Megawebs Plugins/);assert.equal((html.match(/class="plugin-row"/g)||[]).length,12);assert.doesNotMatch(html,/tenderloop|Recorrido ilustrativo|evidence-visual/);
- for(const p of CATALOG){assert.ok(html.includes(`data-product="${p.slug}"`));const result=await fetch(base+'/plugins/'+p.slug);assert.equal(result.status,200);const page=await result.text();assert.ok(page.includes(`<title>${p.name.replace(/&/g,'&amp;')}`));assert.ok(page.includes(`rel="canonical" href="https://aiplugins.megawebs.com/plugins/${p.slug}"`));assert.ok(page.includes(p.zip));assert.ok(page.includes(p.claudeCommand));assert.ok(page.includes(p.codexCommand.replace(/&/g,'&amp;')));assert.equal(page.includes('id="tab-chatgpt"'),p.platforms.includes('chatgpt'));if(!p.platforms.includes('chatgpt'))assert.ok(page.includes('id="tab-claude-code" aria-controls="panel-claude-code" aria-selected="true"'));}
+ for(const p of CATALOG){assert.ok(html.includes(`data-product="${p.slug}"`));const result=await fetch(base+'/plugins/'+p.slug);assert.equal(result.status,200);const page=await result.text();assert.ok(page.includes(`<title>${p.name.replace(/&/g,'&amp;')}`));assert.ok(page.includes(`rel="canonical" href="https://aiplugins.megawebs.com/plugins/${p.slug}"`));assert.equal(page.includes(p.zip),p.platforms.includes('chatgpt')&&!p.openaiListing);
+  const card=html.match(new RegExp(`<article[^>]+data-product="${p.slug}"[\\s\\S]*?</article>`))?.[0];
+  assert.ok(card,p.slug);assert.doesNotMatch(card,/Descargar ZIP/);
+  if(p.openaiListing){assert.ok(card.includes(`href="${p.openaiListing}">Instalar en ChatGPT`));assert.ok(page.includes(`href="${p.openaiListing}">Instalar en ChatGPT`));}
+  else {assert.match(card,/Ver opciones de instalación/);assert.doesNotMatch(page,/Ver ficha del directorio compartido/);}
+  assert.ok(page.includes(p.claudeCommand));assert.ok(page.includes(p.codexCommand.replace(/&/g,'&amp;')));assert.equal(page.includes('id="tab-chatgpt"'),p.platforms.includes('chatgpt'));if(!p.platforms.includes('chatgpt'))assert.ok(page.includes('id="tab-claude-code" aria-controls="panel-claude-code" aria-selected="true"'));}
  for(const c of CATEGORIES){const result=await fetch(base+'/categorias/'+c.slug);assert.equal(result.status,200);const page=await result.text();assert.equal((page.match(/class="plugin-row"/g)||[]).length,CATALOG.filter(p=>p.category===c.slug).length);assert.ok(page.includes(`https://aiplugins.megawebs.com/categorias/${c.slug}`));}
- for(const platform of ['chatgpt','claude-code','codex']){const result=await fetch(base+'/instalar/'+platform);assert.equal(result.status,200);const page=await result.text();assert.ok(page.includes('Cómo instalar plugins en'));if(platform==='chatgpt'){assert.match(page,/Upload plugin archive/);assert.equal((page.match(/<img class="product-icon"/g)||[]).length,8);}}
+ for(const platform of ['chatgpt','claude-code','codex']){const result=await fetch(base+'/instalar/'+platform);assert.equal(result.status,200);const page=await result.text();assert.ok(page.includes('Cómo instalar plugins en'));if(platform==='chatgpt'){assert.match(page,/Desde el directorio de ChatGPT/);assert.equal((page.match(/<img class="product-icon"/g)||[]).length,8);}}
  for(const path of ['/plugins/no-such-plugin','/categorias/unknown','/instalar/no-host','/unknown-page']){const result=await fetch(base+path);assert.equal(result.status,404);assert.match(await result.text(),/No encontramos esta página/);}
 }));
 
@@ -65,7 +70,7 @@ test('Spanish product links open the requested install tab and surface a version
    assert.ok(page.includes(`id="tab-${platform}"`));
   }
   assert.ok(page.includes(`href="${product.repository}/releases/tag/v${product.version}"`));
-  assert.ok(page.includes(product.zip));
+  assert.equal(page.includes(product.zip),!product.openaiListing);
   assert.ok(page.includes('aria-label="Copiar consulta de ejemplo"'));
   assert.ok(page.includes(sample));
  }

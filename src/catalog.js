@@ -9,6 +9,12 @@ export const CATEGORIES = Object.freeze([
  {slug:'desarrollo',name:'Desarrollo',description:'Integraciones y herramientas para trabajar con otros asistentes.'},
 ]);
 const spain = (slug,name,summary,details,requirements,source) => ({slug,name,version:downloads.find(bundle=>bundle.slug===slug)?.version,category:'espana',summary,details,requirements,source,icon:`${slug}.png`,platforms:['chatgpt','claude-code','codex'],kind:'Conector remoto + skills',endpoint:`https://aiplugins.megawebs.com/mcp/${slug}`,repository:`https://github.com/samihalawa/${slug}`,claudeCommand:null});
+// Enable directory links only after verifying the public listing for each host.
+const OPENAI_LISTINGS = Object.freeze({
+ 'borme-intelligence': 'plugin_asdk_app_6ae6f669a4988191aa6862d377b22708',
+ 'catastro-pro': 'plugin_asdk_app_6ae6f70b6c908191a62a44c44829c9d1',
+ 'magicinterview': 'plugin_asdk_app_6ad880b2e2ac8191b4be89ecee3a8cd5',
+});
 const SEARCH_KEYWORDS = Object.freeze({
  'ayudas-espana':['ayudas','subvenciones','financiación','convocatorias','autónomos','grants','subsidies','funding','BDNS'],
  'licita-espana':['licitaciones','contratación pública','contratos públicos','concursos','proveedores','CPV','tenders','procurement','contracts'],
@@ -40,7 +46,8 @@ export const CATALOG = Object.freeze([
  const bundle=downloads.find(d=>d.slug===p.slug&&d.version===p.version);
  if(!bundle||bundle.version!==p.version)throw new Error('Missing matching public download: '+p.slug);
  const localOnly=['bunq-banking-mcp','grokbot','linkedin-godmode-plugin','morning-operator'].includes(p.slug);
- return {...p,keywords:p.category==='espana'?['España','Spain','Spanish',...(SEARCH_KEYWORDS[p.slug]||[])]:SEARCH_KEYWORDS[p.slug]||[],zip:'/downloads/'+bundle.filename,sourceZip:undefined,archivePlatforms:bundle.platforms,platforms:localOnly?['claude-code','codex']:p.platforms,codexCommand:`codex plugin marketplace add samihalawa/spain-assistant-mcp-apps && codex plugin add ${p.slug}@megawebs-plugins`,claudeCommand:`claude plugin install ${p.slug} --marketplace https://aiplugins.megawebs.com/marketplace.json`};
+ const listingId=OPENAI_LISTINGS[p.slug];
+ return {...p,openaiListing:listingId?`https://chatgpt.com/plugins/${listingId}`:null,keywords:p.category==='espana'?['España','Spain','Spanish',...(SEARCH_KEYWORDS[p.slug]||[])]:SEARCH_KEYWORDS[p.slug]||[],zip:'/downloads/'+bundle.filename,sourceZip:undefined,archivePlatforms:bundle.platforms,platforms:localOnly?['claude-code','codex']:p.platforms,codexCommand:`codex plugin marketplace add samihalawa/spain-assistant-mcp-apps && codex plugin add ${p.slug}@megawebs-plugins`,claudeCommand:`claude plugin install ${p.slug} --marketplace https://aiplugins.megawebs.com/marketplace.json`};
 }));
 export const PLATFORMS=Object.freeze([{slug:'chatgpt',name:'ChatGPT'},{slug:'claude-code',name:'Claude Code'},{slug:'codex',name:'Codex'}]);
 export const findProduct=slug=>CATALOG.find(p=>p.slug===slug);
