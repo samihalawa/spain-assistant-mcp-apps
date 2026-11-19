@@ -46,13 +46,13 @@ export const PLATFORMS=Object.freeze([{slug:'chatgpt',name:'ChatGPT'},{slug:'cla
 export const findProduct=slug=>CATALOG.find(p=>p.slug===slug);
 
 const SOURCE_SHAS={
- 'ayudas-espana':'eb4c2279d33cafa16fe9aba832b523eb3a8deb41',
- 'boe-impact':'a770e3ea7fb0c5ae0dadf48c3d00e48a634a8c73',
- 'borme-intelligence':'76dc971f846ed6b11cf7988896ffa93525ed628b',
- 'catastro-pro':'335dfe7cd23ef78811c063c80bf0baa75ba3c3de',
- 'ine-evidence':'62f754bc02fd68958be4c8c6d74de60aa17bcf4e',
- 'licita-espana':'8ef0619aaddfcb3d69e323adca5ec23e185b9af0',
- 'spain-open-data':'25be4c9e50b73a403cb2577ab929b9105352a427',
+ 'ayudas-espana':'3d47398b7ebedf029303a2af7d7f850ef87b6b95',
+ 'boe-impact':'18cc52b5facce60ed123715ac0876a3076e91068',
+ 'borme-intelligence':'be80de21056b5c101d47358d25be924ca9cfe8d9',
+ 'catastro-pro':'3f00482374928d3c851ce618086468266a5272bc',
+ 'ine-evidence':'688cf3e3ae5a10d06202fa792ca97ed512ff0fc8',
+ 'licita-espana':'abf36c65478f39f4f31a4e125983dd50be27c83e',
+ 'spain-open-data':'553dfd300bbbbf829869998876fecb96f8a00851',
  'bunq-banking-mcp':'0d48d28b5aaa27da10d338f8cb7fe4d4ba0861f0',
  'grokbot':'8142baf95ce5853d143e9bfc14d590ae5ac5b6d2',
  'linkedin-godmode-plugin':'4af1618f0dafaf951fd16534039da7cb4b822d0a',
